@@ -1,0 +1,204 @@
+<script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"group": 1, "id": 0, "label": 0, "shape": "dot", "size": 10, "title": "42332d0369806654e1be1f7627ce85d1"}, {"group": 1, "id": 1, "label": 1, "shape": "dot", "size": 10, "title": "0f50c848874d9e3d5ee4fbaaed458abe"}, {"group": 1, "id": 2, "label": 2, "shape": "dot", "size": 10, "title": "130557158560a08c77b3d7275b26edae"}, {"group": 2, "id": 3, "label": 3, "shape": "dot", "size": 10, "title": "331140170d953050de6624eea26038ca"}, {"group": 3, "id": 7, "label": 7, "shape": "dot", "size": 10, "title": "0f47192edacf216efc668d90765e37a0"}, {"group": 2, "id": 4, "label": 4, "shape": "dot", "size": 10, "title": "48504132467a74efc8823c6176d0c9a3"}, {"group": 2, "id": 5, "label": 5, "shape": "dot", "size": 10, "title": "601642122922dd4faef7742bcf6cbb35"}, {"group": 2, "id": 6, "label": 6, "shape": "dot", "size": 10, "title": "55584112304585f32b248416320e6c8f"}, {"group": 3, "id": 8, "label": 8, "shape": "dot", "size": 10, "title": "03d0375990ca83a01ac060594b594076"}, {"group": 3, "id": 9, "label": 9, "shape": "dot", "size": 10, "title": "0e2a4281ef4e58e55430589ab8eb5dda"}]);
+                  edges = new vis.DataSet([{"from": 0, "label": "0.5", "to": 1, "width": 1}, {"from": 0, "label": "0.5", "to": 2, "width": 1}, {"from": 0, "label": "0.5", "to": 3, "width": 1}, {"from": 0, "label": "1.0", "to": 7, "width": 1}, {"from": 3, "label": "0.5", "to": 4, "width": 1}, {"from": 3, "label": "0.5", "to": 5, "width": 1}, {"from": 3, "label": "0.5", "to": 6, "width": 1}, {"from": 3, "label": "0.5", "to": 7, "width": 1}, {"from": 7, "label": "0.5", "to": 8, "width": 1}, {"from": 7, "label": "0.5", "to": 9, "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"layout": {"randomSeed": 8}, "configure": {"enabled": false}, "edges": {"color": {"inherit": true}, "smooth": {"enabled": true, "type": "dynamic"}}, "interaction": {"dragNodes": true, "hideEdgesOnDrag": false, "hideNodesOnDrag": false, "navigationButtons": true}, "physics": {"enabled": true, "stabilization": {"enabled": true, "fit": true, "iterations": 1000, "onlyDynamicEdges": false, "updateInterval": 50}}, "manipulation": {"editNode": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              var network = drawGraph();
+    let value = document.getElementById("close");
+      let val = value.innerText.split('\n');
+      let tresval = [];
+      let group_num = [];
+      let API_list = [];
+      let node_len = [];
+      var i;
+      for(i = 0;i<val.length - 1;i++){
+        tresval.push(val[i].split(','));
+      }
+      for(i = 0;i<tresval.length - 1;i++){
+        API_list.push(tresval[i][0].split(' '));
+        group_num.push(tresval[i][1]);
+        node_len.push(tresval[i][2].split(' '));
+      }
+    
+    network.on("click", function (params) {
+        var clickedNodes = edges.get(params.edges);
+        var clickedEdges = nodes.get(params.nodes);
+        if(clickedEdges.length != 0){
+        document.getElementById("eventSpanHeading2").innerText = document.getElementById("eventSpanHeading").innerText;
+        document.getElementById("eventTitle2").innerText = document.getElementById("eventTitle").innerText;
+        document.getElementById("apiList2").innerText = document.getElementById("apiList").innerText;
+        
+        document.getElementById("eventSpanHeading").innerText = "Node Id : " + (clickedEdges[0].id).toString();
+        document.getElementById("eventTitle").innerText = "Code Id : " + (API_list[clickedEdges[0].id][0]);
+        let apil = "";
+        for(var i = 1; i<API_list.length;i++){
+            if(API_list[clickedEdges[0].id][i] == 1){
+                apil += "API" + i + ", ";
+            }
+        }
+        document.getElementById("apiList").innerText = "API List = {" + apil + "}";
+
+        if(!document.getElementById("eventSpanHeading2").innerText === false){
+          var nol = document.getElementById("eventSpanHeading").innerText.split(' : ');
+          var nol2 = document.getElementById("eventSpanHeading2").innerText.split(' : ');
+          var a = [];
+          for(var i = 1; i<API_list.length;i++){
+            if(API_list[Number(nol[1])][i] == 1 && API_list[Number(nol2[1])][i] == 1){
+                a.push("API" + i);
+            }
+          }
+          document.getElementById("eventSpanHeading3").innerText = "Node-to-node matching API";
+          console.log(a)
+          if(a.length == 0){
+            document.getElementById("apiList3").innerText = "There's no match";
+          }else{
+          document.getElementById("apiList3").innerText = a;
+          }
+        }
+        }
+        
+      });
+      
+    var clusterIndex = 0;
+      var clusters = [];
+      var lastClusterZoomLevel = 0;
+      var clusterFactor = 0.9;
+      
+    network.once("initRedraw", function () {
+        if (lastClusterZoomLevel === 0) {
+          lastClusterZoomLevel = network.getScale();
+        }
+      });
+
+      // we use the zoom event for our clustering
+      network.on("zoom", function (params) {
+        if (params.direction == "-") {
+          if (params.scale < lastClusterZoomLevel * clusterFactor) {
+            makeClusters(params.scale);
+            lastClusterZoomLevel = params.scale;
+          }
+        } else {
+          openClusters(params.scale);
+        }
+      });
+
+      // if we click on a node, we want to open it up!
+      network.on("selectNode", function (params) {
+        if (params.nodes.length == 1) {
+          if (network.isCluster(params.nodes[0]) == true) {
+            network.openCluster(params.nodes[0]);
+          }
+        }
+      });
+
+      // make the clusters
+      function makeClusters(scale) {
+        var clusterOptionsByData = {
+          processProperties: function (clusterOptions, childNodes) {
+            clusterIndex = clusterIndex + 1;
+            var childrenCount = 0;
+            for (var i = 0; i < childNodes.length; i++) {
+              childrenCount += childNodes[i].childrenCount || 1;
+            }
+            clusterOptions.childrenCount = childrenCount;
+            clusterOptions.label = "# " + childrenCount + "";
+            clusterOptions.font = { size: childrenCount * 5 + 30 };
+            clusterOptions.id = "cluster:" + clusterIndex;
+            clusters.push({ id: "cluster:" + clusterIndex, scale: scale });
+            return clusterOptions;
+          },
+          clusterNodeProperties: {
+            borderWidth: 3,
+            shape: "database",
+            font: { size: 30 },
+          },
+        };
+        network.clusterOutliers(clusterOptionsByData);
+        if (document.getElementById("stabilizeCheckbox").checked === true) {
+          // since we use the scale as a unique identifier, we do NOT want to fit after the stabilization
+          network.setOptions({ physics: { stabilization: { fit: false } } });
+          network.stabilize();
+        }
+      }
+
+      // open them back up!
+      function openClusters(scale) {
+        var newClusters = [];
+        var declustered = false;
+        for (var i = 0; i < clusters.length; i++) {
+          if (clusters[i].scale < scale) {
+            network.openCluster(clusters[i].id);
+            lastClusterZoomLevel = scale;
+            declustered = true;
+          } else {
+            newClusters.push(clusters[i]);
+          }
+        }
+        clusters = newClusters;
+        if (
+          declustered === true &&
+          document.getElementById("stabilizeCheckbox").checked === true
+        ) {
+          // since we use the scale as a unique identifier, we do NOT want to fit after the stabilization
+          network.setOptions({ physics: { stabilization: { fit: false } } });
+          network.stabilize();
+        }
+      }
+</script>

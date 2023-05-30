@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr">
+
+<head>
+  <%- include('./head') %>
+  <link rel="stylesheet" href="button.css">
+</head>
+
+<body>
+
+  <%- include('./sidebar') %>
+    <section class="home-section">
+      <div class="text">Select File</div>
+      <div>
+        <div>
+          <input type="file" id="file_uploads" accept=".txt" multiple>
+        </div>
+        <form method="post" action="/filecontents">
+          <button class="custom-btn3 btn-1" type="submit">Create Graph</button>
+          <hr>
+          <div class="preview"></div>
+          <textarea class="vex" rows="25" cols="200" name="filecontent"></textarea>
+        </form>
+      </div>
+    </section>
+
+    <script src="printFileContents.js">
+    </script>
+    <script src="printGraphScript.js"></script>
+
+</body>
+</html>

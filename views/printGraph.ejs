@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <%- include('./head') %>
+    <%- include('./graph_head') %>
+      <style>
+      </style>
+</head>
+
+<body>
+  <%- include('./sidebar') %>
+    <section class="home-section">
+      <input type="checkbox" style="display: none;" id="stabilizeCheckbox" checked/>
+      <div class="text">Graph</div>
+      <div style="display: inline;">
+        <div class="card" style="width: 100%">
+          <div id="mynetwork" class="card-body"></div>
+        </div>
+        <div id="mot" style="margin: 5px;">
+          <h2 id="eventSpanHeading" style="color:rgba(97, 64, 81, .9);"> </h2>
+          <h5 id="eventTitle" style="margin: 5px;color:rgba(97, 64, 81, .9);"> </h5>
+          <pre id="apiList" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </pre>
+        </div>
+        <div id="mot2" style="margin-left: 5px;">
+          <h2 id="eventSpanHeading2" style="color:rgba(97, 64, 81, .9);""> </h2>
+          <h5 id="eventTitle2" style="margin: 5px;color:rgba(97, 64, 81, .9);"> </h5>
+          <pre id="apiList2" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </pre>
+        </div>
+        <div id="mot2" style="margin: 5px;">
+          <h2 id="eventSpanHeading3" style="color:rgba(97, 64, 81, .9);"> </h2>
+          <pre id="apiList3" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </pre>
+        </div>
+        <div id=" vvv"></div>
+      </div>
+      <p id="close" style="display: none;"><%= whoAre %></p>
+    </section>
+    <%- include('./script') %>
+    <script src="printGraphScript.js"></script>
+
+</body>
+
+</html>

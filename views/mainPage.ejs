@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr">
+  <head>
+  <%- include('./head') %>
+  <link rel="stylesheet" href="button.css">
+  </head>
+  <body>
+    <%- include('./sidebar') %>
+
+      <section class="home-section">
+        <div class="text">Dashboard</div>
+        <hr>
+        <% for(item in gfile){ %>
+        <div class="inbody">
+          <button class="custom-btn2 btn-1" type="button" onclick="location.href = '/<%= gfile[item] %>'"><%= gfile[item] %></button>
+        </div>
+        <% } %>
+        <hr>
+        <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
+          <button class="custom-btn btn-1" type="button" onclick="movepage()">Click</button>
+        </div>
+      
+      </section>
+      
+      <script src="printGraphScript.js"></script>
+      <script>
+        function movepage() {
+          location.href = "/filecontents"
+        }
+      </script>
+  </body>
+
+</html>
