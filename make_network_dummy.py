@@ -6,7 +6,7 @@ import numpy as np
 from scipy.cluster.hierarchy import linkage, fcluster
 from scipy.spatial.distance import pdist
 
-if len(sys.argv) != 2:
+if len(sys.argv) != 3:
     print("Insufficient arguments")
     sys.exit()
 
@@ -30,7 +30,7 @@ with open('./text_file/' + file_name, "r", encoding="utf-8") as f:
 np_records = np.array(records)
 X = pdist(np_records, metric='jaccard') # 모든 노드간의 거리가 들어있음
 Z = linkage(X, method='complete', metric='jaccard')
-cluster_ids = fcluster(Z, t=0.5, criterion="distance")
+cluster_ids = fcluster(Z, t=float(sys.argv[2]), criterion="distance")
 
 # print clustering results
 # print(cluster_ids)
@@ -95,7 +95,8 @@ with open('./text_file/' + file_name, 'r', encoding="utf-8") as a:
         t1, t2 = i, i - 1
         if t1 > t2:
             t1, t2 = t2, t1
-        nx_graph.add_edge(group_pre[i], group_pre[i-1], label=str(make_matrix[t1][t2]))
+        print(group_pre)
+        nx_graph.add_edge(group_pre[i], group_pre[i - 1], label=str(make_matrix[t1 - 1][t2 - 1]))
 
     nt = Network()
     nt.from_nx(nx_graph)

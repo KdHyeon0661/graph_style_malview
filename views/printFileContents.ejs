@@ -16,9 +16,12 @@
           <input type="file" id="file_uploads" accept=".txt" multiple>
         </div>
         <form method="post" action="/filecontents">
-          <button class="custom-btn3 btn-1" type="submit">Create Graph</button>
           <hr>
-          <div class="preview"></div>
+          <div class="preview">
+            <button class="custom-btn3 btn-1" type="submit">Create Graph</button>
+            <p>임계값 입력 <input type="number" step="0.01" name="threshold"> </p>
+            <br>
+          </div>
           <textarea class="vex" rows="25" cols="200" name="filecontent"></textarea>
         </form>
       </div>
