@@ -28,11 +28,20 @@
           <h5 id="eventTitle2" style="margin: 5px;color:rgba(97, 64, 81, .9);"> </h5>
           <pre id="apiList2" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </pre>
         </div>
-        <div id="mot2" style="margin: 5px;">
+        <div id="mot3" style="margin: 5px;">
           <h2 id="eventSpanHeading3" style="color:rgba(97, 64, 81, .9);"> </h2>
           <pre id="apiList3" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </pre>
         </div>
-        <div id=" vvv"></div>
+        <div id="vvv"></div>
+        <form method="post" action="/printGraph/<%= whoAre %>">
+          <div>
+            <p>edge 임계값 입력 <input type="number" step="0.01" value='0.5' name="e2_threshold"/> </p>
+          </div>
+          <div>
+            <p>임계값 입력 <input type="number" step="0.01" value='0.5' name="t2_threshold"/> </p>
+          </div>
+          <button class="custom-btn3 btn-1" type="submit">Regenerate Graph</button>
+        </form>
       </div>
       <p id="close" style="display: none;"><%= whoAre %></p>
     </section>

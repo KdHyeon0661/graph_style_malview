@@ -12,18 +12,20 @@
     <section class="home-section">
       <div class="text">Select File</div>
       <div>
-        <div>
-          <input type="file" id="file_uploads" accept=".txt" multiple>
-        </div>
-        <form method="post" action="/filecontents">
+        <form method="post" action="/filecontents" enctype="multipart/form-data">
+          <div>
+            <input type="file" id="file_uploads" name="file_uploads" accept=".txt">
+          </div>
           <hr>
           <div class="preview">
-            <button class="custom-btn3 btn-1" type="submit">Create Graph</button>
+            <button class="custom-btn3 btn-1" type="submit">Generate Graph</button>
             <p>임계값 입력 <input type="number" step="0.01" name="threshold"> </p>
             <br>
+            <p>edge 임계값 입력(표시하는 edge를 제한합니다.) <input type="number" step="0.01" name="e_threshold"> </p>
+            <br>
           </div>
-          <textarea class="vex" rows="25" cols="200" name="filecontent"></textarea>
         </form>
+        <textarea class="vex" rows="25" cols="200" name="filecontent"></textarea>
       </div>
     </section>
 

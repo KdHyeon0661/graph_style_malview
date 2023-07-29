@@ -1,20 +1,19 @@
-from pyvis.network import Network
-import networkx as nx
-
 import sys
 import numpy as np
 from scipy.cluster.hierarchy import linkage, fcluster
 from scipy.spatial.distance import pdist
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     print("Insufficient arguments")
     sys.exit()
 
 file_name = sys.argv[1]
+e_threshold = float(sys.argv[3])
 
 # read data
 records = []
-with open('./text_file/' + file_name, "r", encoding="utf-8") as f:
+titles = []
+with open('./text_file/' + file_name, "r") as f:
     # skip header
     f.readline()
     while True:
@@ -23,6 +22,7 @@ with open('./text_file/' + file_name, "r", encoding="utf-8") as f:
             break
         raw = line.split(", ")
         # remove hash
+        titles.append(raw[0])
         record = raw[1:]
         records.append(record)
 
@@ -32,12 +32,8 @@ X = pdist(np_records, metric='jaccard') # 모든 노드간의 거리가 들어�
 Z = linkage(X, method='complete', metric='jaccard')
 cluster_ids = fcluster(Z, t=float(sys.argv[2]), criterion="distance")
 
-# print clustering results
-# print(cluster_ids)
 
-
-with open('./text_file/' + file_name, 'r', encoding="utf-8") as a:
-    nx_graph = nx.Graph()
+with open('./text_file/' + file_name, 'r') as a:
     data = a.readlines()
     res = []
     for i in data:
@@ -66,18 +62,16 @@ with open('./text_file/' + file_name, 'r', encoding="utf-8") as a:
 
     zip_res = sorted(zip(res, group_res), key=lambda x: x[1])
     tmp = 0
-    for i, j in enumerate(zip_res):
-        nx_graph.add_node(i, size=10, title=j[0][0], group=j[1])
 
     group_res.sort()
 
-
-    with open('./storeValue/' + file_name, 'w', encoding="utf-8") as at:
+    with open('./storeValue/' + file_name, 'w') as at:
         for i, j in zip(zip_res, make_matrix):
             at.write(str(' '.join(i[0])) + ',' + str(i[1]) + ',' + ' '.join(list(map(str, j))) + "\n")
 
     now = 0
     group_pre = [now]
+    same_group_edges = []
     for i in range(1, len(group_res)):
         if group_res[now] != group_res[i]:
             now = i
@@ -86,54 +80,138 @@ with open('./text_file/' + file_name, 'r', encoding="utf-8") as a:
         t1, t2 = now, i
         if t1 > t2:
             t1, t2 = t2, t1
-        nx_graph.add_edge(now, i, label=str(make_matrix[t1][t2]))
+        same_group_edges.append([t1, t2])
 
     if now != 0:
         group_pre.append(group_pre[0])
 
+    connect_group_edges = []
     for i in range(1, len(group_pre)):
         t1, t2 = i, i - 1
         if t1 > t2:
             t1, t2 = t2, t1
-        print(group_pre)
-        nx_graph.add_edge(group_pre[i], group_pre[i - 1], label=str(make_matrix[t1 - 1][t2 - 1]))
+        if make_matrix[t1][t2] >= e_threshold:
+            continue
+        connect_group_edges.append([t1, t2])
 
-    nt = Network()
-    nt.from_nx(nx_graph)
-    nt.set_options("""
-var options = {
-"layout":{"randomSeed": 8},
-  "configure": {
-        "enabled": false
-    },
-    "edges": {
-        "color": {
-            "inherit": true
-        },
-        "smooth": {
-            "enabled": true,
-            "type": "dynamic"
-        }
-    },
-    "interaction": {
-        "dragNodes": true,
-        "hideEdgesOnDrag": false,
-        "hideNodesOnDrag": false,
-        "navigationButtons": true
-    },
-    "physics": {
-        "enabled": true,
-        "stabilization": {
-            "enabled": true,
-            "fit": true,
-            "iterations": 1000,
-            "onlyDynamicEdges": false,
-            "updateInterval": 50
-        }
-    },
-            "manipulation": {
-                "editNode": true
+    with open('./graph_folder/' + file_name[:file_name.find('.')] + '.html', 'w') as f:
+        f.write("""<html>
+    <head>
+        <meta charset="utf-8">
+
+        <script src="lib/bindings/utils.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css"
+              integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"
+                integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ=="
+                crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+        <center>
+            <h1></h1>
+        </center>
+
+        <!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+        <script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+                href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+                rel="stylesheet"
+                integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+                crossorigin="anonymous"
+        />
+        <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+                crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+            <h1></h1>
+        </center>
+        <style type="text/css">
+
+            #mynetwork {
+                width: 500px;
+                height: 500px;
+                background-color: #ffffff;
+                border: 1px solid lightgray;
+                position: relative;
+                float: left;
             }
-}
-""")
-    nt.save_graph('./graph_folder/' + file_name[:file_name.find('.')] + '.html')
+
+
+        </style>
+    </head>
+
+
+    <body>
+    <div class="card" style="width: 100%">
+
+
+        <div id="mynetwork" class="card-body"></div>
+    </div>
+
+
+    <script type="text/javascript">
+
+        // initialize global variables.
+        var edges;
+        var nodes;
+        var network;
+        var container;
+        var options, data;
+
+        // This method is responsible for drawing the graph, returns the drawn network
+        function drawGraph() {
+            var container = document.getElementById('mynetwork');
+
+
+            // parsing and collecting nodes and edges from the python
+            """)
+        f.write("""nodes = new vis.DataSet([\n""")
+        for i, j in enumerate(group_res):
+            f.write(f'            {{"group": {j}, "id": {i}, "label": {i}, "shape": "dot", "size": 10, "title": "{titles[i]}"}},\n')
+        f.write("""        ]);
+        """)
+        f.write("""    edges = new vis.DataSet([""")
+        for i, j in same_group_edges:
+            f.write(f'            {{"from": {i}, "to": {j}, "label": "{make_matrix[i][j]}", "length": {100 + make_matrix[i][j] * 400}}},\n')
+        for i, j in connect_group_edges:
+            f.write(f'            {{"from": {group_pre[i]}, "to": {group_pre[j]}, "label": "{make_matrix[i][j]}", "length": {30 + make_matrix[i][j] * 2000}}},\n')
+        f.write("""]);
+        """)
+
+        f.write("""    data = {nodes: nodes, edges: edges};
+
+                var options = {
+                    "layout": {"randomSeed": 8}, 
+                    "configure": {"enabled": false}, 
+                    "edges": {
+                        "color": {"inherit": true},
+                        "smooth": {"enabled": true, "type": "dynamic"}
+                    },
+                    "interaction": {"dragNodes": true, 
+                        "hideEdgesOnDrag": false, 
+                        "hideNodesOnDrag": false, 
+                        "navigationButtons": true}, 
+                    "physics": {"enabled": true, 
+                        "stabilization": {"enabled": true, 
+                        "fit": true, 
+                        "iterations": 1000, 
+                        "onlyDynamicEdges": false, 
+                        "updateInterval": 50}
+                      }, 
+                    "manipulation": {"editNode": true}
+                };
+                
+                network = new vis.Network(container, data, options);
+
+                return network;
+            }
+
+            drawGraph();
+        </script>
+        </body>
+        </html>""")

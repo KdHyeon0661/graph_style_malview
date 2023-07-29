@@ -1,66 +1,42 @@
 const express = require('express');
-const http = require('http');
 var fs = require('fs');
 const { spawn } = require('child_process');
 const path = require("path");
 const app = express()
-const server = http.createServer(app)
+const { upload } = require('./util/multer.js');
+const printGraphRouter = require('./routes/printGraph');
+
+
 const PORT = 8080
 
 app.set('views', path.join(__dirname, './views'));
-app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);  
+app.set('view engine', 'html');
 
+app.use('/printGraph', printGraphRouter);
 app.use(express.static(__dirname + "/lib"));
+app.use(express.static('text_file'));
+app.use(express.static('public'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
     const folder = './graph_folder';
     fs.readdir(folder, function (error, filelist) {
-        res.render('mainPage', {gfile:filelist});
+        res.render('mainPage.ejs', {gfile:filelist});
     });
 });
 
 app.get('/filecontents', (req, res) => {
-    res.render('printFileContents');
+    res.render('printFileContents.ejs');
 });
 
-app.post('/filecontents', (req, res) => {
-    const a = new Date();
+app.post('/filecontents', upload.single('file_uploads'), (req, res) => {
+    const { filename, destination } = req.file;
 
-    let year = a.getFullYear();
-    let month = a.getMonth() + 1;
-    let date = a.getDate();
-    let hours = a.getHours();
-    let minutes = a.getMinutes();
-    let seconds = a.getSeconds();
-    let milliseconds = a.getMilliseconds();
-    let nowV = year + '_' + month + '_' + date + '_' + hours + '_' + minutes + '_' + seconds + '_' + milliseconds;
-
-    let folder = './text_file/';
-    let file = nowV + '.txt';
-    fs.open(folder + file, 'w', function (err, fd) {
-        if (err) throw err;
-        console.log('file open complete');
-    });
-    fs.writeFile(folder + file, req.body.filecontent, 'utf8', function (error) {
-        console.log('write end')
-    });
-    const python = spawn('python', ['make_network_dummy.py', file]);
-    
+    const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(2), parseFloat(req.body.e_threshold).toFixed(2)]);
     python.on('close', (code) => {
         res.redirect('/');
-    });
-});
-
-app.get('/:id', (req, res) => {
-    var dataToSend;
-    const python = spawn('python', ['beautiful.py', req.params.id]);
-    fs.readFile('./storeValue/' + req.params.id.toString().split('.', 1) + '.txt', 'utf8', (err, data) => {
-        dataToSend = data;
-    });
-    python.on('close', (code) => {
-        res.render('printGraph', {whoAre:dataToSend});
     });
 });
 
@@ -81,6 +57,15 @@ app.get('/volt_ready', (req, res) => {
     });
 });
 
+app.post('/update_graph', (req, res) => {
+    var file = req.params.id + '.txt';
+    const python = spawn('python', ['make_network_dummy.py', file, parseFloat(req.body.threshold).toFixed(2), parseFloat(req.body.e_threshold).toFixed(2)]);
+    
+    python.on('close', (code) => {
+        res.redirect('/');
+    });
+});
+
 app.use(function(req, res, next) {
     res.status(404);	
     res.send(
@@ -92,6 +77,6 @@ app.use(function(req, res, next) {
 	);
 });
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

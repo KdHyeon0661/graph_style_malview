@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" dir="ltr">
+<html lang="ko">
   <head>
   <%- include('./head') %>
   <link rel="stylesheet" href="button.css">
@@ -12,7 +12,7 @@
         <hr>
         <% for(item in gfile){ %>
         <div class="inbody">
-          <button class="custom-btn2 btn-1" type="button" onclick="location.href = '/<%= gfile[item] %>'"><%= gfile[item] %></button>
+          <button class="custom-btn2 btn-1" type="button" onclick="location.href = '/printGraph/<%= gfile[item] %>'"><%= gfile[item] %></button>
         </div>
         <% } %>
         <hr>
