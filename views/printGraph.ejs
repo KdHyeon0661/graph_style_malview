@@ -4,9 +4,7 @@
 
 <head>
   <%- include('./head') %>
-    <%- include('./graph_head') %>
-      <style>
-      </style>
+  <%- include('./graph_head') %>
 </head>
 
 <body>
@@ -21,16 +19,16 @@
         <div id="mot" style="margin: 5px;">
           <h2 id="eventSpanHeading" style="color:rgba(97, 64, 81, .9);"> </h2>
           <h5 id="eventTitle" style="margin: 5px;color:rgba(97, 64, 81, .9);"> </h5>
-          <pre id="apiList" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </pre>
+          <p id="apiList" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </p>
         </div>
         <div id="mot2" style="margin-left: 5px;">
           <h2 id="eventSpanHeading2" style="color:rgba(97, 64, 81, .9);""> </h2>
           <h5 id="eventTitle2" style="margin: 5px;color:rgba(97, 64, 81, .9);"> </h5>
-          <pre id="apiList2" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </pre>
+          <p id="apiList2" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </p>
         </div>
         <div id="mot3" style="margin: 5px;">
           <h2 id="eventSpanHeading3" style="color:rgba(97, 64, 81, .9);"> </h2>
-          <pre id="apiList3" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </pre>
+          <p id="apiList3" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </p>
         </div>
         <div id="vvv"></div>
         <form method="post" action="/printGraph/<%= whoAre %>">
@@ -43,7 +41,7 @@
           <button class="custom-btn3 btn-1" type="submit">Regenerate Graph</button>
         </form>
       </div>
-      <p id="close" style="display: none;"><%= whoAre %></p>
+      <p id="close" style="display: none;"><%= whoAre2 %></p>
     </section>
     <%- include('./script') %>
     <script src="printGraphScript.js"></script>

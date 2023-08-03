@@ -1,6 +1,4 @@
 <script type="text/javascript">
-
-        // initialize global variables.
         var edges;
         var nodes;
         var network;
@@ -48,7 +46,8 @@
             {"group": 8, "id": 31, "label": 31, "shape": "dot", "size": 10, "title": "32"},
             {"group": 9, "id": 32, "label": 32, "shape": "dot", "size": 10, "title": "33"},
         ]);
-            edges = new vis.DataSet([            {"from": 0, "to": 1, "label": "0.0", "length": 100.0},
+            edges = new vis.DataSet([
+                            {"from": 0, "to": 1, "label": "0.0", "length": 100.0},
             {"from": 0, "to": 2, "label": "0.04", "length": 116.0},
             {"from": 0, "to": 3, "label": "0.0", "length": 100.0},
             {"from": 4, "to": 5, "label": "0.044444444444444446", "length": 117.77777777777777},
@@ -78,7 +77,6 @@
             {"from": 23, "to": 29, "label": "0.044444444444444446", "length": 118.88888888888889},
             {"from": 29, "to": 30, "label": "0.3010752688172043", "length": 632.1505376344086},
             {"from": 30, "to": 31, "label": "0.5319148936170213", "length": 1093.8297872340424},
-            {"from": 31, "to": 32, "label": "0.7159090909090909", "length": 1461.818181818182},
             {"from": 32, "to": 0, "label": "0.3561643835616438", "length": 742.3287671232877},
 ]);
             data = {nodes: nodes, edges: edges};
@@ -127,18 +125,17 @@
       }
     
     network.on("click", function (params) {
-        var clickedNodes = edges.get(params.edges);
-        var clickedEdges = nodes.get(params.nodes);
-        if(clickedEdges.length != 0){
+        var clickedNodes = nodes.get(params.nodes);
+        if(clickedNodes.length != 0){
         document.getElementById("eventSpanHeading2").innerText = document.getElementById("eventSpanHeading").innerText;
         document.getElementById("eventTitle2").innerText = document.getElementById("eventTitle").innerText;
         document.getElementById("apiList2").innerText = document.getElementById("apiList").innerText;
         
-        document.getElementById("eventSpanHeading").innerText = "Node Id : " + (clickedEdges[0].id).toString();
-        document.getElementById("eventTitle").innerText = "Code Id : " + (API_list[clickedEdges[0].id][0]);
+        document.getElementById("eventSpanHeading").innerText = "Node Id : " + (clickedNodes[0].id).toString();
+        document.getElementById("eventTitle").innerText = "Code Id : " + (API_list[clickedNodes[0].id][0]);
         let apil = "";
-        for(var i = 1; i<API_list.length;i++){
-            if(API_list[clickedEdges[0].id][i] == 1){
+        for(var i = 1; i<API_list[clickedNodes[0].id].length;i++){
+            if(API_list[clickedNodes[0].id][i] >= 1){
                 apil += "API" + i + ", ";
             }
         }
@@ -148,8 +145,8 @@
           var nol = document.getElementById("eventSpanHeading").innerText.split(' : ');
           var nol2 = document.getElementById("eventSpanHeading2").innerText.split(' : ');
           var a = [];
-          for(var i = 1; i<API_list.length;i++){
-            if(API_list[Number(nol[1])][i] == 1 && API_list[Number(nol2[1])][i] == 1){
+          for(var i = 1; i<API_list[clickedNodes[0].id].length;i++){
+            if(API_list[Number(nol[1])][i] >= 1 && API_list[Number(nol2[1])][i] >= 1){
                 a.push("API" + i);
             }
           }
@@ -163,91 +160,5 @@
         }
         }
         
-      });
+      });</script>
       
-    var clusterIndex = 0;
-      var clusters = [];
-      var lastClusterZoomLevel = 0;
-      var clusterFactor = 0.9;
-      
-    network.once("initRedraw", function () {
-        if (lastClusterZoomLevel === 0) {
-          lastClusterZoomLevel = network.getScale();
-        }
-      });
-
-      // we use the zoom event for our clustering
-      network.on("zoom", function (params) {
-        if (params.direction == "-") {
-          if (params.scale < lastClusterZoomLevel * clusterFactor) {
-            makeClusters(params.scale);
-            lastClusterZoomLevel = params.scale;
-          }
-        } else {
-          openClusters(params.scale);
-        }
-      });
-
-      // if we click on a node, we want to open it up!
-      network.on("selectNode", function (params) {
-        if (params.nodes.length == 1) {
-          if (network.isCluster(params.nodes[0]) == true) {
-            network.openCluster(params.nodes[0]);
-          }
-        }
-      });
-
-      // make the clusters
-      function makeClusters(scale) {
-        var clusterOptionsByData = {
-          processProperties: function (clusterOptions, childNodes) {
-            clusterIndex = clusterIndex + 1;
-            var childrenCount = 0;
-            for (var i = 0; i < childNodes.length; i++) {
-              childrenCount += childNodes[i].childrenCount || 1;
-            }
-            clusterOptions.childrenCount = childrenCount;
-            clusterOptions.label = "# " + childrenCount + "";
-            clusterOptions.font = { size: childrenCount * 5 + 30 };
-            clusterOptions.id = "cluster:" + clusterIndex;
-            clusters.push({ id: "cluster:" + clusterIndex, scale: scale });
-            return clusterOptions;
-          },
-          clusterNodeProperties: {
-            borderWidth: 3,
-            shape: "database",
-            font: { size: 30 },
-          },
-        };
-        network.clusterOutliers(clusterOptionsByData);
-        if (document.getElementById("stabilizeCheckbox").checked === true) {
-          // since we use the scale as a unique identifier, we do NOT want to fit after the stabilization
-          network.setOptions({ physics: { stabilization: { fit: false } } });
-          network.stabilize();
-        }
-      }
-
-      // open them back up!
-      function openClusters(scale) {
-        var newClusters = [];
-        var declustered = false;
-        for (var i = 0; i < clusters.length; i++) {
-          if (clusters[i].scale < scale) {
-            network.openCluster(clusters[i].id);
-            lastClusterZoomLevel = scale;
-            declustered = true;
-          } else {
-            newClusters.push(clusters[i]);
-          }
-        }
-        clusters = newClusters;
-        if (
-          declustered === true &&
-          document.getElementById("stabilizeCheckbox").checked === true
-        ) {
-          // since we use the scale as a unique identifier, we do NOT want to fit after the stabilization
-          network.setOptions({ physics: { stabilization: { fit: false } } });
-          network.stabilize();
-        }
-      }
-</script>

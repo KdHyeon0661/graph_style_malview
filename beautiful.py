@@ -32,18 +32,17 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
     """)
     f.write("""
     network.on("click", function (params) {
-        var clickedNodes = edges.get(params.edges);
-        var clickedEdges = nodes.get(params.nodes);
-        if(clickedEdges.length != 0){
+        var clickedNodes = nodes.get(params.nodes);
+        if(clickedNodes.length != 0){
         document.getElementById("eventSpanHeading2").innerText = document.getElementById("eventSpanHeading").innerText;
         document.getElementById("eventTitle2").innerText = document.getElementById("eventTitle").innerText;
         document.getElementById("apiList2").innerText = document.getElementById("apiList").innerText;
         
-        document.getElementById("eventSpanHeading").innerText = "Node Id : " + (clickedEdges[0].id).toString();
-        document.getElementById("eventTitle").innerText = "Code Id : " + (API_list[clickedEdges[0].id][0]);
+        document.getElementById("eventSpanHeading").innerText = "Node Id : " + (clickedNodes[0].id).toString();
+        document.getElementById("eventTitle").innerText = "Code Id : " + (API_list[clickedNodes[0].id][0]);
         let apil = "";
-        for(var i = 1; i<API_list.length;i++){
-            if(API_list[clickedEdges[0].id][i] == 1){
+        for(var i = 1; i<API_list[clickedNodes[0].id].length;i++){
+            if(API_list[clickedNodes[0].id][i] >= 1){
                 apil += "API" + i + ", ";
             }
         }
@@ -53,8 +52,8 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
           var nol = document.getElementById("eventSpanHeading").innerText.split(' : ');
           var nol2 = document.getElementById("eventSpanHeading2").innerText.split(' : ');
           var a = [];
-          for(var i = 1; i<API_list.length;i++){
-            if(API_list[Number(nol[1])][i] == 1 && API_list[Number(nol2[1])][i] == 1){
+          for(var i = 1; i<API_list[clickedNodes[0].id].length;i++){
+            if(API_list[Number(nol[1])][i] >= 1 && API_list[Number(nol2[1])][i] >= 1){
                 a.push("API" + i);
             }
           }
@@ -68,8 +67,9 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
         }
         }
         
-      });
+      });</script>
       """)
+    '''
     f.write("""
     var clusterIndex = 0;
       var clusters = [];
@@ -157,4 +157,4 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
         }
       }
 </script>
-""")
+""")'''
