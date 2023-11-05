@@ -5,6 +5,8 @@
 <head>
   <%- include('./head') %>
   <%- include('./graph_head') %>
+  <link rel="stylesheet" href="network_right.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -12,35 +14,27 @@
     <section class="home-section">
       <input type="checkbox" style="display: none;" id="stabilizeCheckbox" checked/>
       <div class="text">Graph</div>
-      <div style="display: inline;">
-        <div class="card" style="width: 100%">
-          <div id="mynetwork" class="card-body"></div>
-        </div>
-        <div id="mot" style="margin: 5px;">
-          <h2 id="eventSpanHeading" style="color:rgba(97, 64, 81, .9);"> </h2>
-          <h5 id="eventTitle" style="margin: 5px;color:rgba(97, 64, 81, .9);"> </h5>
-          <p id="apiList" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </p>
-        </div>
-        <div id="mot2" style="margin-left: 5px;">
-          <h2 id="eventSpanHeading2" style="color:rgba(97, 64, 81, .9);""> </h2>
-          <h5 id="eventTitle2" style="margin: 5px;color:rgba(97, 64, 81, .9);"> </h5>
-          <p id="apiList2" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </p>
-        </div>
-        <div id="mot3" style="margin: 5px;">
-          <h2 id="eventSpanHeading3" style="color:rgba(97, 64, 81, .9);"> </h2>
-          <p id="apiList3" style="font-size:20px;margin: 5px;color:rgba(97, 64, 81, .9);"> </p>
-        </div>
-        <div id="vvv"></div>
-        <form method="post" action="/printGraph/<%= whoAre %>">
-          <div>
-            <p>edge 임계값 입력 <input type="number" step="0.01" value='0.5' name="e2_threshold"/> </p>
+      <div>
+        <span>
+          <div class="card" style="width: 100%">
+            <div id="mynetwork" class="card-body"></div>
           </div>
-          <div>
-            <p>임계값 입력 <input type="number" step="0.01" value='0.5' name="t2_threshold"/> </p>
-          </div>
-          <button class="custom-btn3 btn-1" type="submit">Regenerate Graph</button>
-        </form>
+        </span>
+        <div class="clu"><span>Selected Cluster Id : </span><span id="clusterId"></span></div>
+        <div class="marg"><span>Selected Node Id : </span><span id="nodeId"></span></div>
+        <div class="scrollable-div" id="cluster-api-list">
+        </div>
+        <div class="scrollable-div2" id="c2c-length-list">
+        </div>
       </div>
+      
+        <!--<div id="vvv"></div>-->
+        <form method="post" action="/printGraph/<%= whoAre %>">
+            <label style="margin-left: 20px;">edge 임계값 입력 </label> <input type="number" step="0.01" value='0.5' name="e2_threshold"/>
+            <label style="margin-left: 20px;">임계값 입력 </label> <input type="number" step="0.01" value='0.5' name="t2_threshold"/>
+          <button class="custom-btn3 btn-1" type="submit" style="margin-left: 20px;">Regenerate Graph</button>
+        </form>
+      
       <p id="close" style="display: none;"><%= whoAre2 %></p>
     </section>
     <%- include('./script') %>

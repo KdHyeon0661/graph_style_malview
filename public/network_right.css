@@ -1,0 +1,42 @@
+.scrollable-div {
+    margin-top: 5px;
+    margin-right: 10px;
+    height: 300px; /* 높이 설정 */
+    overflow-y: scroll; /* 세로 스크롤 활성화 */
+    border: 1px solid #ccc; /* 테두리 스타일 */
+    padding: 10px; /* 안쪽 여백 설정 */
+    background-color: white;
+}
+
+.scrollable-div2 {
+    margin-top: 15px;
+    margin-right: 10px;
+    height: 215px; /* 높이 설정 */
+    overflow-y: scroll; /* 세로 스크롤 활성화 */
+    border: 1px solid #ccc; /* 테두리 스타일 */
+    padding: 10px; /* 안쪽 여백 설정 */
+    background-color: white;
+}
+
+.marg{
+    margin-top: 5px;
+}
+
+.clu{
+    margin-top: 5px;
+    font-size: x-large;
+}
+
+.first-value{
+    background-color: skyblue;
+    margin-top: 3px;
+    border-radius: 1em;
+    padding-left: 10px;
+}
+
+.second-value{
+    background-color: skyblue;
+    margin-top: 3px;
+    border-radius: 1em;
+    padding-left: 10px;
+}

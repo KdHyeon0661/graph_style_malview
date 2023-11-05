@@ -16,60 +16,50 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
     f.write("""
     let value = document.getElementById("close");
       let val = value.innerText.split('\\n');
-      let tresval = [];
-      let group_num = [];
-      let API_list = [];
-      let node_len = [];
-      var i;
-      for(i = 0;i<val.length - 1;i++){
-        tresval.push(val[i].split(','));
+      let size = Number(val[0]);
+      let api_val = [];
+      let c2clen = [];
+      for(let i = 1 + size;i <1 + size * 2;i++){
+        api_val.push(val[i].split(','));
       }
-      for(i = 0;i<tresval.length - 1;i++){
-        API_list.push(tresval[i][0].split(' '));
-        group_num.push(tresval[i][1]);
-        node_len.push(tresval[i][2].split(' '));
+
+      for(let i = 1 + size * 2;i <1 + size * 3;i++){
+        c2clen.push(val[i].split(','));
       }
+
     """)
     f.write("""
     network.on("click", function (params) {
-        var clickedNodes = nodes.get(params.nodes);
-        if(clickedNodes.length != 0){
-        document.getElementById("eventSpanHeading2").innerText = document.getElementById("eventSpanHeading").innerText;
-        document.getElementById("eventTitle2").innerText = document.getElementById("eventTitle").innerText;
-        document.getElementById("apiList2").innerText = document.getElementById("apiList").innerText;
-        
-        document.getElementById("eventSpanHeading").innerText = "Node Id : " + (clickedNodes[0].id).toString();
-        document.getElementById("eventTitle").innerText = "Code Id : " + (API_list[clickedNodes[0].id][0]);
-        let apil = "";
-        for(var i = 1; i<API_list[clickedNodes[0].id].length;i++){
-            if(API_list[clickedNodes[0].id][i] >= 1){
-                apil += "API" + i + ", ";
-            }
-        }
-        document.getElementById("apiList").innerText = "API List = {" + apil + "}";
+        let clickedNodes = nodes.get(params.nodes);
+        document.getElementById("clusterId").innerText = (clickedNodes[0].group).toString();
+        document.getElementById("nodeId").innerText = (clickedNodes[0].id).toString();
 
-        if(!document.getElementById("eventSpanHeading2").innerText === false){
-          var nol = document.getElementById("eventSpanHeading").innerText.split(' : ');
-          var nol2 = document.getElementById("eventSpanHeading2").innerText.split(' : ');
-          var a = [];
-          for(var i = 1; i<API_list[clickedNodes[0].id].length;i++){
-            if(API_list[Number(nol[1])][i] >= 1 && API_list[Number(nol2[1])][i] >= 1){
-                a.push("API" + i);
-            }
-          }
-          document.getElementById("eventSpanHeading3").innerText = "Node-to-node matching API";
-          console.log(a)
-          if(a.length == 0){
-            document.getElementById("apiList3").innerText = "There's no match";
-          }else{
-          document.getElementById("apiList3").innerText = a;
-          }
+        const parentElement = document.getElementById('cluster-api-list');
+        while (parentElement.firstChild) {
+          parentElement.removeChild(parentElement.firstChild);
         }
+        for(let i = 0;i < api_val[clickedNodes[0].group].length;i++){
+          let newParagraph = document.createElement('p');
+          newParagraph.classList.add('first-value');
+          newParagraph.textContent = api_val[clickedNodes[0].group][i];
+          parentElement.appendChild(newParagraph);
         }
-        
-      });</script>
+
+        const parentElement2 = document.getElementById('c2c-length-list');
+        while (parentElement2.firstChild) {
+          parentElement2.removeChild(parentElement2.firstChild);
+        }
+        for(let i = 0;i < c2clen[clickedNodes[0].group].length;i++){
+          let newParagraph = document.createElement('p');
+          newParagraph.classList.add('second-value');
+          newParagraph.textContent = "클러스터 " + i.toString() + "과의 API 일치도 : " + c2clen[clickedNodes[0].group][i].toString();
+          parentElement2.appendChild(newParagraph);
+        }
+
+      });
       """)
-    '''
+
+    
     f.write("""
     var clusterIndex = 0;
       var clusters = [];
@@ -157,4 +147,4 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
         }
       }
 </script>
-""")'''
+""")

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <%- include('./head') %>
+</head>
+
+<body>
+  <%- include('./sidebar') %>
+  <section class="home-section">
+    <div class="text">Make File</div>
+    <hr style="border: 3px groove;">
+    <br><br>
+    <form id="uploadForm" action="/make_file" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".cpp" multiple>
+        <button type="submit">업로드</button>
+    </form>
+  </section>
+  
+</body>
+</html>

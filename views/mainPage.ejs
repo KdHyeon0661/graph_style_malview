@@ -9,13 +9,12 @@
 
       <section class="home-section">
         <div class="text">Dashboard</div>
-        <hr>
+        <hr style="border: 3px groove;">
         <% for(item in gfile){ %>
         <div class="inbody">
           <button class="custom-btn2 btn-1" type="button" onclick="location.href = '/printGraph/<%= gfile[item] %>'"><%= gfile[item] %></button>
         </div>
         <% } %>
-        <hr>
         <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
           <button class="custom-btn btn-1" type="button" onclick="movepage()">Click</button>
         </div>
