@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-  <%- include('./head') %>
-  <link rel="stylesheet" href="button.css">
-  </head>
-  <body>
-    <%- include('./sidebar') %>
 
-      <section class="home-section">
-        <div class="text">Dashboard</div>
-        <hr style="border: 3px groove;">
-        <% for(item in gfile){ %>
+<head>
+  <%- include('./head') %>
+    <link rel="stylesheet" href="button.css">
+</head>
+
+<body>
+  <%- include('./sidebar') %>
+
+    <section class="home-section">
+      <div class="text">Dashboard</div>
+      <hr style="border: 3px groove;">
+      <% for(item in gfile){ %>
         <div class="inbody">
-          <button class="custom-btn2 btn-1" type="button" onclick="location.href = '/printGraph/<%= gfile[item] %>'"><%= gfile[item] %></button>
+          <button class="custom-btn2 btn-1" type="button" onclick="location.href = '/printGraph/<%= gfile[item] %>'">
+            <%= gfile[item] %>
+          </button>
         </div>
         <% } %>
-        <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
-          <button class="custom-btn btn-1" type="button" onclick="movepage()">Click</button>
-        </div>
-      
-      </section>
-      
-      <script src="printGraphScript.js"></script>
-      <script>
-        function movepage() {
-          location.href = "/filecontents"
-        }
-      </script>
-  </body>
+          <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
+            <button class="custom-btn btn-1" type="button" onclick="movepage()">Click</button>
+          </div>
+
+    </section>
+
+    <script src="printGraphScript.js"></script>
+    <script>
+      function movepage() {
+        location.href = "/filecontents"
+      }
+    </script>
+</body>
 
 </html>

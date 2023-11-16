@@ -14,7 +14,7 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
     f.write(str(soup.find_all('script')[-1])[:-30])
     f.write('var network = drawGraph();')
     f.write("""
-    let value = document.getElementById("close");
+      let value = document.getElementById("close");
       let val = value.innerText.split('\\n');
       let size = Number(val[0]);
       let api_val = [];
@@ -27,6 +27,7 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
         c2clen.push(val[i].split(','));
       }
 
+
     """)
     f.write("""
     network.on("click", function (params) {
@@ -38,6 +39,7 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
         while (parentElement.firstChild) {
           parentElement.removeChild(parentElement.firstChild);
         }
+
         for(let i = 0;i < api_val[clickedNodes[0].group].length;i++){
           let newParagraph = document.createElement('p');
           newParagraph.classList.add('first-value');
@@ -57,6 +59,7 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
         }
 
       });
+      
       """)
 
     

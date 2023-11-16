@@ -4,15 +4,15 @@
 
 <head>
   <%- include('./head') %>
-  <%- include('./graph_head') %>
-  <link rel="stylesheet" href="network_right.css"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('./graph_head') %>
+      <link rel="stylesheet" href="network_right.css" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
   <%- include('./sidebar') %>
     <section class="home-section">
-      <input type="checkbox" style="display: none;" id="stabilizeCheckbox" checked/>
+      <input type="checkbox" style="display: none;" id="stabilizeCheckbox" checked />
       <div class="text">Graph</div>
       <div>
         <span>
@@ -22,24 +22,48 @@
         </span>
         <div class="clu"><span>Selected Cluster Id : </span><span id="clusterId"></span></div>
         <div class="marg"><span>Selected Node Id : </span><span id="nodeId"></span></div>
-        <div class="scrollable-div" id="cluster-api-list">
-        </div>
-        <div class="scrollable-div2" id="c2c-length-list">
+        <div class="scrollable-div" id="cluster-api-list"></div>
+        <div class="scrollable-div2" id="c2c-length-list"></div>
+      </div>
+
+      <form method="post" action="/printGraph/<%= whoAre %>">
+        <label style="margin-left: 20px;">edge 임계값 입력 </label> <input type="number" step="0.01" value='0.5'
+          name="e2_threshold" />
+        <label style="margin-left: 20px;">임계값 입력 </label> <input type="number" step="0.01" value='0.5'
+          name="t2_threshold" />
+        <button class="custom-btn3 btn-1" type="submit" style="margin-left: 20px;">Regenerate Graph</button>
+      </form>
+
+      <button id="modalOpenButton">모달창 열기</button>
+
+      <div id="modalContainer" class="hidden">
+        <div id="modalContent">
+          <button id="modalCloseButton">닫기</button>
+          <div>
+            <input type="text" id="finput">
+            <input type="text" id="sinput">
+            <button id="clic">검색</button>
+          </div>
+          <br>
+          <div class="idv">
+            <div class="scrollable-span" id="first-res"></div>
+            <div class="scrollable-span" id="second-res"></div>
+            <div class="tmp">
+              <div class="scrollable-span2" id="third-res"></div>
+              <br>
+              <span>API 일치도 : </span><span id="corr"></span>
+            </div>
+          </div>
+          
         </div>
       </div>
-      
-        <!--<div id="vvv"></div>-->
-        <form method="post" action="/printGraph/<%= whoAre %>">
-            <label style="margin-left: 20px;">edge 임계값 입력 </label> <input type="number" step="0.01" value='0.5' name="e2_threshold"/>
-            <label style="margin-left: 20px;">임계값 입력 </label> <input type="number" step="0.01" value='0.5' name="t2_threshold"/>
-          <button class="custom-btn3 btn-1" type="submit" style="margin-left: 20px;">Regenerate Graph</button>
-        </form>
-      
+
       <p id="close" style="display: none;"><%= whoAre2 %></p>
+      <p id="ham" style="display: none;"><%= thisname %></p>
     </section>
     <%- include('./script') %>
-    <script src="printGraphScript.js"></script>
-
+      <script src="printGraphScript.js"></script>
+      <script src="modal_part.js"></script>
 </body>
 
 </html>

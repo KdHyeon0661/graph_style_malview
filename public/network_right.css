@@ -1,42 +1,116 @@
 .scrollable-div {
     margin-top: 5px;
     margin-right: 10px;
-    height: 300px; /* 높이 설정 */
-    overflow-y: scroll; /* 세로 스크롤 활성화 */
-    border: 1px solid #ccc; /* 테두리 스타일 */
-    padding: 10px; /* 안쪽 여백 설정 */
+    height: 300px;
+    /* 높이 설정 */
+    overflow-y: scroll;
+    /* 세로 스크롤 활성화 */
+    border: 1px solid #ccc;
+    /* 테두리 스타일 */
+    padding: 10px;
+    /* 안쪽 여백 설정 */
     background-color: white;
 }
 
 .scrollable-div2 {
     margin-top: 15px;
     margin-right: 10px;
-    height: 215px; /* 높이 설정 */
-    overflow-y: scroll; /* 세로 스크롤 활성화 */
-    border: 1px solid #ccc; /* 테두리 스타일 */
-    padding: 10px; /* 안쪽 여백 설정 */
+    height: 215px;
+    /* 높이 설정 */
+    overflow-y: scroll;
+    /* 세로 스크롤 활성화 */
+    border: 1px solid #ccc;
+    /* 테두리 스타일 */
+    padding: 10px;
+    /* 안쪽 여백 설정 */
     background-color: white;
 }
 
-.marg{
+.marg {
     margin-top: 5px;
 }
 
-.clu{
+.clu {
     margin-top: 5px;
     font-size: x-large;
 }
 
-.first-value{
+.first-value {
     background-color: skyblue;
     margin-top: 3px;
     border-radius: 1em;
     padding-left: 10px;
 }
 
-.second-value{
+.second-value {
     background-color: skyblue;
     margin-top: 3px;
     border-radius: 1em;
     padding-left: 10px;
+}
+
+#modalOpenButton, #modalCloseButton {
+    cursor: pointer;
+  }
+  
+  #modalContainer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  #modalContent {
+    position: absolute;
+    background-color: #ffffff;
+    width: 1000px;
+    height: 500px;
+    padding: 15px;
+  }
+  
+  #modalContainer.hidden {
+    display: none;
+  }
+
+  .scrollable-span {
+    display: inline-block;
+    width: 30%;
+    height:80%;
+    margin-right: 28px;
+    /* 높이 설정 */
+    overflow-y: scroll;
+    /* 세로 스크롤 활성화 */
+    border: 1px solid #ccc;
+    /* 테두리 스타일 */
+    padding: 10px;
+    /* 안쪽 여백 설정 */
+    background-color: white;
+}
+
+.tmp{
+    display: inline-block;
+    width: 30%;
+    height:80%;
+}
+
+.scrollable-span2 {
+    height:90%;
+    margin-right: 28px;
+    /* 높이 설정 */
+    overflow-y: scroll;
+    /* 세로 스크롤 활성화 */
+    border: 1px solid #ccc;
+    /* 테두리 스타일 */
+    padding: 10px;
+    /* 안쪽 여백 설정 */
+    background-color: white;
+}
+
+.idv {
+    height:100%;
 }
