@@ -27,10 +27,16 @@ router.get("/:id", (req, res) => {
 router.post("/:id", (req, res) => {
     var filename = req.params.id.toString() + '.txt';
 
-    const python = spawn('python', ['make_network_dummy.py', filename, parseFloat(req.body.t2_threshold).toFixed(2), parseFloat(req.body.e2_threshold).toFixed(2)]);
+    const python = spawn('python', ['make_network_dummy.py', filename, parseFloat(req.body.e_threshold1).toFixed(3), parseFloat(req.body.e_threshold2).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3)]);
+
+    python.stderr.on('data', (data) => {
+        // 오류 출력
+        console.error(`오류 발생: ${data}`);
+    });
+
     python.on('close', (code) => {
-        console.log(`child process close all stdio with code ${code}`);
-        res.redirect('/printGraph/' + req.params.id.toString().split('.', 1) + '.html');
+        console.log(`파이썬 프로세스 종료, 종료 코드: ${code}`);
+        res.redirect('/');
     });
 });
 
