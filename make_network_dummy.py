@@ -8,13 +8,14 @@ import warnings
 # Set the warning filter for FutureWarning to "ignore"
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-if len(sys.argv) != 4:
+if len(sys.argv) != 5:
     print("Insufficient arguments")
     sys.exit()
 
 file_name = sys.argv[1]
 e_threshold1 = float(sys.argv[2])
 e_threshold2 = float(sys.argv[3])
+edge_print_threshold = float(sys.argv[4])
 
 # ============ 1. Read data ============
 records = []
@@ -255,9 +256,9 @@ with open('./storeValue/' + file_name, 'w') as f:
 
         for i in range(len(node_vals)):
             for j in range(i + 1, len(node_vals)):
-                if(round(valX[node_vals[i][0]][node_vals[j][0]], 3) > 0.8):
+                if(round(valX[node_vals[i][0]][node_vals[j][0]], 3) < edge_print_threshold):
                     f.write(
-                    f'            {{"from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{round(valX[node_vals[i][0]][node_vals[j][0]], 3)}", "length": {100 + (valX[node_vals[i][0]][node_vals[j][0]] - 0.8) * 10 / 2 * 1000}}},\n')
+                    f'            {{"from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{round(valX[node_vals[i][0]][node_vals[j][0]], 3)}", "length": {100 + valX[node_vals[i][0]][node_vals[j][0]] * 1000}}},\n')
 
         f.write("""]);
         """)

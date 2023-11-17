@@ -44,7 +44,7 @@ app.get('/filecontents', (req, res) => {
 app.post('/filecontents', upload.single('file_uploads'), (req, res) => {
     const { filename, destination } = req.file;
 
-    const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(2), parseFloat(req.body.e_threshold).toFixed(2)]);
+    const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.e_threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3)]);
     
     python.stderr.on('data', (data) => {
         // 오류 출력
