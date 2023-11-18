@@ -44,7 +44,7 @@ app.get('/filecontents', (req, res) => {
 app.post('/filecontents', upload.single('file_uploads'), (req, res) => {
     const { filename, destination } = req.file;
 
-    const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.e_threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3)]);
+    const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3), parseFloat(req.body.random_seed).toFixed(3)]);
     
     python.stderr.on('data', (data) => {
         // 오류 출력
@@ -53,15 +53,6 @@ app.post('/filecontents', upload.single('file_uploads'), (req, res) => {
 
     python.on('close', (code) => {
         console.log(`파이썬 프로세스 종료, 종료 코드: ${code}`);
-        res.redirect('/');
-    });
-});
-
-app.post('/upload_graph', (req, res) => {
-    var file = req.params.id + '.txt';
-    const python = spawn('python', ['make_network_dummy.py', file, parseFloat(req.body.threshold).toFixed(2), parseFloat(req.body.e_threshold).toFixed(2)]);
-    
-    python.on('close', (code) => {
         res.redirect('/');
     });
 });

@@ -13,9 +13,12 @@ if len(sys.argv) != 5:
     sys.exit()
 
 file_name = sys.argv[1]
-e_threshold1 = float(sys.argv[2])
-e_threshold2 = float(sys.argv[3])
-edge_print_threshold = float(sys.argv[4])
+threshold = float(sys.argv[2])
+edge_print_threshold = float(sys.argv[3])
+random_seed = str(sys.argv[4])
+
+node_vals = []
+node_api_vals = []
 
 # ============ 1. Read data ============
 records = []
@@ -67,7 +70,7 @@ for column in (data.columns[1:]):
 # np_records = np.array(records)
 X = pdist(data, metric='jaccard') # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
 Z = linkage(X, method='complete', metric='jaccard')
-cluster_ids = fcluster(Z, t=e_threshold1, criterion="distance") # 0.25
+cluster_ids = fcluster(Z, t=threshold, criterion="distance") # 0.25
 valX = squareform(X)
 
 cluster_elements = {}
@@ -81,109 +84,78 @@ for i, element in enumerate(cluster_ids):
 # Sort cluster numbers in ascending order
 sorted_clusters = sorted(cluster_elements.keys())
 
-node_vals = []
-node_api_vals = []
-cluster_X_vals = []
+for cluster in sorted_clusters:
+    elements = cluster_elements[cluster]
+    node_vals.append(elements)
+
 # ============ 4. Perform secondary clustering ============
-n = 0
 # perform secondary clustering with cosine similarity
+# Print API candidates for each cluster
 for cluster, elements in cluster_elements.items():
     # print progress (print percentage of current cluster number / total cluster number)
-    n += 1
-    # print(f"Progress: {n}/{len(cluster_elements)}")
 
     cluster_data = data.iloc[elements]
-    # if elements in a cluster is less than 2, skip
-    # if len(cluster_records) < 2:
-    #     continue
-    cluster_X = pdist(cluster_data, metric='cosine')
-    cluster_Z = linkage(cluster_X, method='complete', metric='cosine')
-    cluster_ids = fcluster(cluster_Z, t=e_threshold2, criterion="distance") # 0.4
-    cluster_X_vals.append(cluster_X);
+    # print(cluster_data.columns[1:])
+    # Initialize a list to store labels for each column within the cluster
+    labels = []
 
-    # Create a dictionary to store the elements for each cluster
-    sub_cluster_elements = {}
+    # Calculate the IQR for each column in the cluster
+    for column in (cluster_data.columns[1:]):
+        if cluster_data[column].max() == 0:  # if all values are 0, skip
+            continue
 
-    # Assign elements to clusters
-    for i, element in enumerate(cluster_ids):
-        if element not in sub_cluster_elements:
-            sub_cluster_elements[element] = []
-        sub_cluster_elements[element].append(cluster_elements[cluster][i])
+        # Convert the column to numeric and handle non-numeric values with 'coerce' option
+        # cluster_data[column] = pd.to_numeric(cluster_data[column], errors='coerce')
 
-    # Sort cluster numbers in ascending order
-    sub_sorted_clusters = sorted(sub_cluster_elements.keys())
+        iqr = data[column].quantile(0.75) - data[column].quantile(0.25)
 
-    # Print the elements for each cluster in sorted order
-    for sub_cluster in sub_sorted_clusters:
-        elements = sub_cluster_elements[sub_cluster]
-        node_vals.append(elements)
-        # print(f"Cluster {cluster}.{sub_cluster}: {elements}")
+        # Identify rows within, below, and above the IQR range for each column
+        within_iqr = cluster_data[(cluster_data >= (data.quantile(0.25) - iqr_threshold * iqr)) &
+                                  (cluster_data <= (data.quantile(0.75) + iqr_threshold * iqr))].count()
+        below_iqr = cluster_data[cluster_data < (data.quantile(0.25) - iqr_threshold * iqr)].count()
+        above_iqr = cluster_data[cluster_data > (data.quantile(0.75) + iqr_threshold * iqr)].count()
 
-    # ============ 5. Print API candidates for each cluster ============
-    # Print API candidates for each cluster
-    for sub_cluster, elements in sub_cluster_elements.items():
+        # Retrieve the count values (second column) from within_iqr
+        within_counts = within_iqr[1:].values
+        below_counts = below_iqr[1:].values
+        above_counts = above_iqr[1:].values
 
-        cluster_data = data.iloc[elements]
-        # print(cluster_data.columns[1:])
-        # Initialize a list to store labels for each column within the cluster
-        labels = []
+        total_data_in_cluster = len(cluster_data)
 
-        # Calculate the IQR for each column in the cluster
-        for column in (cluster_data.columns[1:]):
-            if cluster_data[column].max() == 0:  # if all values are 0, skip
-                continue
+        # Calculate the proportion of data for each label within, below, and above the IQR
+        proportion_within_iqr = within_counts / total_data_in_cluster
+        proportion_below_iqr = below_counts / total_data_in_cluster
+        proportion_above_iqr = above_counts / total_data_in_cluster
 
-            # Convert the column to numeric and handle non-numeric values with 'coerce' option
-            # cluster_data[column] = pd.to_numeric(cluster_data[column], errors='coerce')
+        # print(f"Within IQR for {column}: {proportion_within_iqr}")
+        # Iterate through the labels (assuming labels are column names)
+        for label, ratio_within, ratio_below, ratio_above in zip(cluster_data.columns[1:], proportion_within_iqr,
+                                                                 proportion_below_iqr, proportion_above_iqr):
+            # Check if any of the ratios exceed 70%
+            if label not in labels and (ratio_below > 0.7 or ratio_above > 0.7): #
+                labels.append(label)
+    node_api_vals.append(labels)
 
-            iqr = data[column].quantile(0.75) - data[column].quantile(0.25)
-
-            # Identify rows within, below, and above the IQR range for each column
-            within_iqr = cluster_data[(cluster_data >= (data.quantile(0.25) - iqr_threshold * iqr)) &
-                                      (cluster_data <= (data.quantile(0.75) + iqr_threshold * iqr))].count()
-            below_iqr = cluster_data[cluster_data < (data.quantile(0.25) - iqr_threshold * iqr)].count()
-            above_iqr = cluster_data[cluster_data > (data.quantile(0.75) + iqr_threshold * iqr)].count()
-
-            # Retrieve the count values (second column) from within_iqr
-            within_counts = within_iqr[1:].values
-            below_counts = below_iqr[1:].values
-            above_counts = above_iqr[1:].values
-
-            total_data_in_cluster = len(cluster_data)
-
-            # Calculate the proportion of data for each label within, below, and above the IQR
-            proportion_within_iqr = within_counts / total_data_in_cluster
-            proportion_below_iqr = below_counts / total_data_in_cluster
-            proportion_above_iqr = above_counts / total_data_in_cluster
-
-            # print(f"Within IQR for {column}: {proportion_within_iqr}")
-            # Iterate through the labels (assuming labels are column names)
-            for label, ratio_within, ratio_below, ratio_above in zip(cluster_data.columns[1:], proportion_within_iqr,
-                                                                     proportion_below_iqr, proportion_above_iqr):
-                # Check if any of the ratios exceed 70%
-                if label not in labels and (ratio_below > 0.7 or ratio_above > 0.7):
-                    labels.append(label)
-        
-        node_api_vals.append(labels)
-
-        # Print the results for this cluster
-        '''if labels:
-            print(f"Cluster {cluster}.{sub_cluster}: Candidate API List: {', '.join(labels)}")
-            print(f"Cluster {cluster}.{sub_cluster}: Candidate API Count: {len(labels)}")'''
+    # Print the results for this cluster
+    '''if labels:
+        print(f"Cluster {cluster}: Candidate API List: {', '.join(labels)}")
+        print(f"Cluster {cluster}: Candidate API Count: {len(labels)}")'''
 
 # --------------------------------------------
 
 res = []
-for i in range(len(node_api_vals)):
-    a = []
-    for j in range(len(node_api_vals)):
-        b = 0
-        for k in node_api_vals[j]:
-            if k in node_api_vals[i]:
-                b += 1
-        if(len(node_api_vals[i]) != 0):
-            a.append(round(b / len(node_api_vals[i]), 3))
-    res.append(a)
+tv = []
+for i in node_vals:
+    tmp = []
+    for j in i:
+        tmp.append(records[j][1:])
+    row_means = np.round(np.mean(np.array(tmp), axis=0), decimals=3)
+    tv.append(row_means.tolist())
+
+if len(node_vals) == 1:
+    res = [1.0]
+else:
+    res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
 
 with open('./storeValue/' + file_name, 'w') as f:
     f.write(str(len(node_api_vals)))
@@ -194,7 +166,7 @@ with open('./storeValue/' + file_name, 'w') as f:
         v = ','.join(map(str,i))
         f.write('\n' + v);
     for i in res:
-        v = ','.join(map(str, i))
+        v = ','.join(map(str, map(float, i)))
         f.write('\n' + v);
     
 
@@ -266,7 +238,9 @@ with open('./storeValue/' + file_name, 'w') as f:
         f.write("""    data = {nodes: nodes, edges: edges};
 
                 var options = {
-                    "layout": {"randomSeed": 1}, 
+                    "layout": {"randomSeed": """)
+        f.write(str(random_seed))
+        f.write("""}, 
                     "configure": {"enabled": false}, 
                     "edges": {
                         "color": {"inherit": true},
@@ -282,8 +256,7 @@ with open('./storeValue/' + file_name, 'w') as f:
                         "iterations": 1000, 
                         "onlyDynamicEdges": false, 
                         "updateInterval": 50}
-                      }, 
-                    "manipulation": {"editNode": true}
+                      }
                 };
                 
                 network = new vis.Network(container, data, options);
