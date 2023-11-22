@@ -8,14 +8,13 @@ import warnings
 # Set the warning filter for FutureWarning to "ignore"
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-if len(sys.argv) != 5:
+if len(sys.argv) != 4:
     print("Insufficient arguments")
     sys.exit()
 
 file_name = sys.argv[1]
 threshold = float(sys.argv[2])
 edge_print_threshold = float(sys.argv[3])
-random_seed = str(sys.argv[4])
 
 node_vals = []
 node_api_vals = []
@@ -238,9 +237,7 @@ with open('./storeValue/' + file_name, 'w') as f:
         f.write("""    data = {nodes: nodes, edges: edges};
 
                 var options = {
-                    "layout": {"randomSeed": """)
-        f.write(str(random_seed))
-        f.write("""}, 
+                    "layout": {"randomSeed": 1}, 
                     "configure": {"enabled": false}, 
                     "edges": {
                         "color": {"inherit": true},

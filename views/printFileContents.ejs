@@ -18,14 +18,14 @@
             <input type="file" id="file_uploads" name="file_uploads" accept=".txt, .csv">
           </div>
           <div class="preview" style="margin: 20px;">
+            <p>파일 이름 입력</p>
+            <input type="text" name="fname" id="fname">
+            <br><br>
             <p>edge 첫번째 임계값 입력</p>
             <input type="number" step="0.01" name="threshold" value="0.55">
             <br><br>
             <p>edge 출력 제한값 입력 </p>
             <input type="number" step="0.01" name="edge_print_threshold" value="0.8">
-            <br><br>
-            <p>edge Random Seed 입력 </p>
-            <input type="number" step="1" name="random_seed" value="2">
             <br><br>
             <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
               <button class="custom-btn btn-1" type="submit">Generate</button>

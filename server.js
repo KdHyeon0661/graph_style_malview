@@ -36,15 +36,19 @@ app.get('/', (req, res) => {
     });
 });
 
-
 app.get('/filecontents', (req, res) => {
     res.render('printFileContents.ejs');
 });
 
 app.post('/filecontents', upload.single('file_uploads'), (req, res) => {
     const { filename, destination } = req.file;
+    console.log(req.file.filename);
 
-    const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3), parseFloat(req.body.random_seed).toFixed(3)]);
+    fs.rename('text_file/' + req.file.filename, 'text_file/' + req.body.fname + '.' + req.file.originalname.split('.')[1], (err)=>{
+        console.log("rename complete!");
+    });
+
+    const python = spawn('python', ['make_network_dummy.py', req.body.fname + '.' + req.file.originalname.split('.')[1], parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3)]);
     
     python.stderr.on('data', (data) => {
         // 오류 출력
@@ -53,7 +57,7 @@ app.post('/filecontents', upload.single('file_uploads'), (req, res) => {
 
     python.on('close', (code) => {
         console.log(`파이썬 프로세스 종료, 종료 코드: ${code}`);
-        res.redirect('/');
+        // res.redirect('/');
     });
 });
 

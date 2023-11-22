@@ -25,6 +25,9 @@ let first_res = [];
 let second_res = [];
 
 function print(event){
+  first.innerHTML = "";
+  second.innerHTML = "";
+  third.innerHTML = "";
   first_res = [];
   second_res = [];
   let first_value = text_val[Number(finput.value) + 1].split(', ');
@@ -42,7 +45,6 @@ function print(event){
   }
 
   let val = first_res.filter(x => second_res.includes(x));
-
 
   for(let i = 0;i < first_res.length;i++){
     let newParagraph = document.createElement('p');
