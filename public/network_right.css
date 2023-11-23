@@ -49,11 +49,34 @@
     padding-left: 10px;
 }
 
-#modalOpenButton, #modalCloseButton {
+#modalOpenButton{
     cursor: pointer;
-  }
-  
-  #modalContainer {
+    background-color: #D6EEEB;
+    width: 150px;
+    height: 30px;
+    margin-left: 20px;
+    margin-top: 15px;
+    font-family: 'Lato', sans-serif;
+    font-weight:bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+        7px 7px 20px 0px rgba(0, 0, 0, .1),
+        4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+}
+
+#modalOpenButton:hover {
+    background-color: #000;
+    color: #D6EEEB;
+    /*background: linear-gradient(0deg, rgba(0, 3, 255, 1) 0%, rgba(2, 126, 251, 1) 100%);*/
+}
+
+#modalCloseButton{
+    cursor: pointer;
+    float: right;
+}
+#modalContainer {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -63,7 +86,7 @@
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.5);
-  }
+}
   
   #modalContent {
     position: absolute;
@@ -80,7 +103,7 @@
   .scrollable-span {
     display: inline-block;
     width: 30%;
-    height:80%;
+    height:90%;
     margin-right: 28px;
     /* 높이 설정 */
     overflow-y: scroll;
@@ -99,7 +122,7 @@
 }
 
 .scrollable-span2 {
-    height:90%;
+    height:100%;
     margin-right: 28px;
     /* 높이 설정 */
     overflow-y: scroll;
@@ -112,5 +135,51 @@
 }
 
 .idv {
+    margin: 10px;
+    padding: 10px;
+    border: solid;
     height:100%;
+}
+
+.idv2{
+    height:100%;
+}
+
+#helvoa{
+    width: 150px;
+    cursor: pointer;
+    background-color: #D6EEEB;
+    height: 30px;
+    margin-left: 20px;
+    margin-top: 15px;
+    font-family: 'Lato', sans-serif;
+    font-weight:bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+        7px 7px 20px 0px rgba(0, 0, 0, .1),
+        4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+}
+
+#helvoa:hover {
+    background-color: #000;
+    color: #D6EEEB;
+    /*background: linear-gradient(0deg, rgba(0, 3, 255, 1) 0%, rgba(2, 126, 251, 1) 100%);*/
+}
+
+#clic {
+    width: 150px;
+    cursor: pointer;
+    background-color: #D6EEEB;
+    height: 20px;
+    margin-left: 20px;
+    font-family: 'Lato', sans-serif;
+    font-weight:bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+        7px 7px 20px 0px rgba(0, 0, 0, .1),
+        4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
 }

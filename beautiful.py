@@ -57,7 +57,7 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
           newParagraph.textContent = "클러스터 " + i.toString() + "과의 API 일치도 : " + c2clen[clickedNodes[0].group][i].toString();
           parentElement2.appendChild(newParagraph);
         }
-
+        
       });
       
       """)

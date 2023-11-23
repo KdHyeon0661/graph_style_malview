@@ -12,16 +12,16 @@
     <section class="home-section">
       <div class="text">Dashboard</div>
       <hr style="border: 3px groove;">
-      <% for(item in gfile){ %>
-        <div class="inbody">
-          <button class="custom-btn2 btn-1" type="button" onclick="location.href = '/printGraph/<%= gfile[item] %>'">
+      <div class="inbody">
+        <% for(item in gfile){ %>
+          <button class="custom-btn2 btn-1" type="button" onclick="location.href = '/printGraph/<%= gfile[item] %>.html'">
             <%= gfile[item] %>
           </button>
-        </div>
         <% } %>
-          <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
-            <button class="custom-btn btn-1" type="button" onclick="movepage()">Click</button>
-          </div>
+      </div>
+      <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
+        <button class="custom-btn btn-1" type="button" onclick="movepage()">Click</button>
+      </div>
 
     </section>
 

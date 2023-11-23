@@ -152,10 +152,11 @@ for i in node_vals:
     tv.append(row_means.tolist())
 
 if len(node_vals) == 1:
-    res = [1.0]
+    res = [[1.0]]
 else:
     res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
 
+print(res)
 with open('./storeValue/' + file_name, 'w') as f:
     f.write(str(len(node_api_vals)))
     for i in node_vals:
@@ -213,7 +214,7 @@ with open('./storeValue/' + file_name, 'w') as f:
         f.write("""nodes = new vis.DataSet([\n""")
         for i in range(len(node_vals)):
             for j in range(len(node_vals[i])):
-                f.write(f'            {{"group": {i + 1}, "id": {node_vals[i][j]}, "label": {node_vals[i][j]}, "shape": "dot", "size": 10, "title": "{node_vals[i][j]}"}},\n')
+                f.write(f'            {{"group": {i}, "id": {node_vals[i][j]}, "label": {node_vals[i][j]}, "shape": "dot", "size": 10, "title": "{node_vals[i][j]}"}},\n')
         f.write("""        ]);
         """)
         f.write("""    edges = new vis.DataSet([\n
@@ -229,7 +230,7 @@ with open('./storeValue/' + file_name, 'w') as f:
             for j in range(i + 1, len(node_vals)):
                 if(round(valX[node_vals[i][0]][node_vals[j][0]], 3) < edge_print_threshold):
                     f.write(
-                    f'            {{"from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{round(valX[node_vals[i][0]][node_vals[j][0]], 3)}", "length": {100 + valX[node_vals[i][0]][node_vals[j][0]] * 1000}}},\n')
+                    f'            {{"from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{round(valX[node_vals[i][0]][node_vals[j][0]], 3)}"}},\n')
 
         f.write("""]);
         """)

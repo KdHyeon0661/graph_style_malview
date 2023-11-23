@@ -25,7 +25,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/:id", (req, res) => {
-    var filename = req.params.id.toString() + '.txt';
+    var filename = req.params.id.toString().split('.', 1) + '.txt';
     const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3)]);
     
     python.stderr.on('data', (data) => {

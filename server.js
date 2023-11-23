@@ -32,7 +32,11 @@ app.use(session({
 app.get('/', (req, res) => {
     const folder = './graph_folder';
     fs.readdir(folder, function (error, filelist) {
-        res.render('mainPage.ejs', {gfile:filelist});
+        let arr = [];
+        for(let i = 0;i<filelist.length;i++){
+            arr.push(filelist[i].split('.', 1));
+        }
+        res.render('mainPage.ejs', {gfile:arr});
     });
 });
 
@@ -57,7 +61,7 @@ app.post('/filecontents', upload.single('file_uploads'), (req, res) => {
 
     python.on('close', (code) => {
         console.log(`파이썬 프로세스 종료, 종료 코드: ${code}`);
-        // res.redirect('/');
+        res.redirect('/');
     });
 });
 

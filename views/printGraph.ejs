@@ -6,7 +6,9 @@
   <%- include('./head') %>
     <%- include('./graph_head') %>
       <link rel="stylesheet" href="network_right.css" />
+      <link rel="stylesheet" href="button.css" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -26,26 +28,37 @@
         <div class="scrollable-div2" id="c2c-length-list"></div>
       </div>
 
-      <form method="post" action="/printGraph/<%= whoAre %>">
-        <label style="margin-left: 20px;">클러스터링 임계값 입력 </label> <input type="number" step="0.01" value='0.5'
-          name="threshold" />`
-          <label style="margin-left: 20px;">edge 출력 제한값 입력</label> <input type="number" step="0.01" value='0.5'
-          name="edge_print_threshold" />
-        <button class="custom-btn3 btn-1" type="submit" style="margin-left: 20px;">Regenerate Graph</button>
-      </form>
+      <!--<div class="idv">
+        <div class="scrollable-span" id="first-res"></div>
+        <div class="scrollable-span" id="second-res"></div>
+        <div class="tmp">
+          <div class="scrollable-span2" id="third-res"></div>
+          <br>
+          <span style="margin-left: 28px;">API 일치도 : </span><span id="corr"></span>
+        </div>
+      </div>-->
 
-      <button id="modalOpenButton">모달창 열기</button>
+      <button id="modalOpenButton">노드 간 관계 확인하기</button>
+
+      <form method="post" action="/printGraph/<%= whoAre %>" class="idv">
+        <label style="margin-left: 20px;">클러스터링 임계값 입력 : </label> <input type="number" step="0.01" value='0.5'
+          name="threshold" style="text-align: center;"/><span style="margin-left: 100px;"></span>
+          <label style="margin-left: 20px;">edge 출력 제한값 입력 :</label> <input type="number" step="0.01" value='0.5'
+          name="edge_print_threshold" style="text-align: center;"/><br>
+        <button type="submit" style="margin-left: 20px" id="helvoa">Regenerate Graph</button>
+      </form>
 
       <div id="modalContainer" class="hidden">
         <div id="modalContent">
-          <button id="modalCloseButton">닫기</button>
+          
           <div>
-            <input type="text" id="finput">
-            <input type="text" id="sinput">
+            <span>노드 1 : <input type="text" id="finput" style="text-align: center;"></span>
+            <span>노드 2 : <input type="text" id="sinput" style="text-align: center;"></span>
             <button id="clic">검색</button>
+            <i class="material-icons" id="modalCloseButton">close</i>
           </div>
           <br>
-          <div class="idv">
+          <div class="idv2">
             <div class="scrollable-span" id="first-res"></div>
             <div class="scrollable-span" id="second-res"></div>
             <div class="tmp">
@@ -54,7 +67,6 @@
               <span>API 일치도 : </span><span id="corr"></span>
             </div>
           </div>
-          
         </div>
       </div>
 
