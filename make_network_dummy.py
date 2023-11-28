@@ -67,8 +67,8 @@ for column in (data.columns[1:]):
 # ============ 3. Perform primary clustering ============
 # perform primary clustering with jaccard similarity
 # np_records = np.array(records)
-X = pdist(data, metric='jaccard') # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
-Z = linkage(X, method='complete', metric='jaccard')
+X = pdist(data, metric='correlation') # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
+Z = linkage(X, method='complete', metric='correlation')
 cluster_ids = fcluster(Z, t=threshold, criterion="distance") # 0.25
 valX = squareform(X)
 
@@ -226,11 +226,11 @@ with open('./storeValue/' + file_name, 'w') as f:
                     f.write(
                         f'            {{"from": {node_vals[i][0]}, "to": {node_vals[i][j]}, "label": "{round(valX[node_vals[i][0]][node_vals[i][j]], 3)}"}},\n')
 
-        for i in range(len(node_vals)):
-            for j in range(i + 1, len(node_vals)):
-                if(round(valX[node_vals[i][0]][node_vals[j][0]], 3) < edge_print_threshold):
+        for i in range(len(res)):
+            for j in range(i + 1, len(res)):
+                if res[i][j] < edge_print_threshold:
                     f.write(
-                    f'            {{"from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{round(valX[node_vals[i][0]][node_vals[j][0]], 3)}"}},\n')
+                    f'            {{"from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{res[i][j]}"}},\n')
 
         f.write("""]);
         """)
