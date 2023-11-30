@@ -135,7 +135,7 @@
 }
 
 .idv {
-    margin: 10px;
+    margin: 30px;
     padding: 10px;
     border: solid;
     height:100%;
@@ -182,4 +182,27 @@
         7px 7px 20px 0px rgba(0, 0, 0, .1),
         4px 4px 5px 0px rgba(0, 0, 0, .1);
     outline: none;
+}
+
+.custom-btn5{
+    cursor: pointer;
+    background-color: #D6EEEB;
+    width: 150px;
+    height: 30px;
+    margin-left: 20px;
+    margin-top: 15px;
+    font-family: 'Lato', sans-serif;
+    font-weight:bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+        7px 7px 20px 0px rgba(0, 0, 0, .1),
+        4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+}
+
+.custom-btn5:hover {
+    background-color: #000;
+    color: #D6EEEB;
+    /*background: linear-gradient(0deg, rgba(0, 3, 255, 1) 0%, rgba(2, 126, 251, 1) 100%);*/
 }

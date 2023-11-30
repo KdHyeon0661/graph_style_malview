@@ -156,7 +156,9 @@ if len(node_vals) == 1:
 else:
     res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
 
-print(res)
+if file_name[-1] == 'v':
+    file_name.replace('.csv', '.txt')
+
 with open('./storeValue/' + file_name, 'w') as f:
     f.write(str(len(node_api_vals)))
     for i in node_vals:

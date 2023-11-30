@@ -7,10 +7,8 @@
 </head>
 
 <body>
-  <%- include('./sidebar') %>
-
     <section class="home-section">
-      <div class="text">Dashboard</div>
+      <div class="text">대쉬보드</div>
       <hr style="border: 3px groove;">
       <div class="inbody">
         <% for(item in gfile){ %>
@@ -20,7 +18,7 @@
         <% } %>
       </div>
       <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
-        <button class="custom-btn btn-1" type="button" onclick="movepage()">Click</button>
+        <button class="custom-btn btn-1" type="button" onclick="movepage()">그래프 생성</button>
       </div>
 
     </section>

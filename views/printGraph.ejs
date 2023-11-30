@@ -12,10 +12,9 @@
 </head>
 
 <body>
-  <%- include('./sidebar') %>
     <section class="home-section">
       <input type="checkbox" style="display: none;" id="stabilizeCheckbox" checked />
-      <div class="text">Graph</div>
+      <div class="text">그래프</div>
       <div>
         <span>
           <div class="card" style="width: 100%">
@@ -38,8 +37,6 @@
         </div>
       </div>-->
 
-      <button id="modalOpenButton">노드 간 관계 확인하기</button>
-
       <form method="post" action="/printGraph/<%= whoAre %>" class="idv">
         <label style="margin-left: 20px;">클러스터링 임계값 입력 : </label> <input type="number" step="0.01" value='0.5'
           name="threshold" style="text-align: center;"/><span style="margin-left: 100px;"></span>
@@ -47,6 +44,9 @@
           name="edge_print_threshold" style="text-align: center;"/><br>
         <button type="submit" style="margin-left: 20px" id="helvoa">Regenerate Graph</button>
       </form>
+
+      <button id="modalOpenButton">노드 간 관계 확인하기</button>
+      <button class="custom-btn5" type="button" onclick="movepage()">메인 페이지로 이동</button>
 
       <div id="modalContainer" class="hidden">
         <div id="modalContent">
@@ -74,6 +74,11 @@
       <p id="ham" style="display: none;"><%= thisname %></p>
     </section>
     <%- include('./script') %>
+    <script>
+      function movepage() {
+        location.href = "/"
+      }
+    </script>
       <script src="printGraphScript.js"></script>
       <script src="modal_part.js"></script>
 </body>

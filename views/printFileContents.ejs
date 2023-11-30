@@ -7,17 +7,15 @@
 </head>
 
 <body>
-
-  <%- include('./sidebar') %>
     <section class="home-section">
-      <div class="text">Select File</div>
+      <div class="text">그래프 설정 및 생성</div>
       <hr>
       <div>
         <form method="post" action="/filecontents" enctype="multipart/form-data">
-          <div style="margin: 20px;">
+          <div style="margin: 50px;">
             <input type="file" id="file_uploads" name="file_uploads" accept=".txt, .csv">
           </div>
-          <div class="preview" style="margin: 20px;">
+          <div class="preview" style="margin: 50px;">
             <p>파일 이름 입력</p>
             <input type="text" name="fname" id="fname" style="width:300px;">
             <br><br>
@@ -28,13 +26,18 @@
             <input type="number" step="0.01" name="edge_print_threshold" value="0.8" style="width:300px;">
             <br><br>
             <div class="button" style="position: absolute; right: 90px; bottom: 50px;">
-              <button class="custom-btn btn-1" type="submit">Generate</button>
+              <button class="custom-btn btn-1" type="submit">업로드</button>
+              <button class="custom-btn btn-1" type="button" onclick="movepage()">취소</button>
             </div>
           </div>
         </form>
       </div>
     </section>
-
+    <script>
+      function movepage() {
+        location.href = "/"
+      }
+    </script>
     <script src="printFileContents.js"></script>
     <script src="printGraphScript.js"></script>
 
