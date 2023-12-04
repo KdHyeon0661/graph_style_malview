@@ -144,20 +144,20 @@ for cluster, elements in cluster_elements.items():
 
 res = []
 tv = []
-for i in node_vals:
+'''for i in node_vals:
     tmp = []
     for j in i:
         tmp.append(records[j][1:])
     row_means = np.round(np.mean(np.array(tmp), axis=0), decimals=3)
-    tv.append(row_means.tolist())
-
+    tv.append(row_means.tolist())'''
+vals = valX.tolist()
 if len(node_vals) == 1:
     res = [[1.0]]
 else:
-    for i in range(len(tv)):
+    for i in range(len(node_vals)):
         v = []
-        for j in range(len(tv)):
-            v.append(round(1 - jaccard(tv[i], tv[j]), 3))
+        for j in range(len(node_vals)):
+            v.append(1 - round(vals[node_vals[i][0]][node_vals[j][0]], 3))
         res.append(v)
     #res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
 
