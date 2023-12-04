@@ -21,6 +21,7 @@ node_api_vals = []
 
 # ============ 1. Read data ============
 records = []
+recordss = []
 with open("./text_file/" + file_name, "r", encoding="utf-8") as f:
     # skip label header
     header = f.readline().strip().split(', ')
@@ -31,9 +32,12 @@ with open("./text_file/" + file_name, "r", encoding="utf-8") as f:
         raw = line.strip().split(', ')
         # print(raw)
         raw = list(map(int, raw))
+        raw2 = [e != 0 for e in raw]
         records.append(raw)
+        recordss.append(raw2)
 
 data = pd.DataFrame(records, columns=header)  # Skip the first column as it contains numbers
+data1 = pd.DataFrame(recordss, columns=header)
 
 # ============ 2. Print common API for the entire dataset ============
 # Define the IQR threshold (you can calculate IQR for each column if needed)
@@ -67,7 +71,7 @@ for column in (data.columns[1:]):
 # ============ 3. Perform primary clustering ============
 # perform primary clustering with jaccard similarity
 # np_records = np.array(records)
-X = pdist(data, metric='jaccard') # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
+X = pdist(data1, metric='jaccard') # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
 Z = linkage(X, method='complete', metric='jaccard')
 cluster_ids = fcluster(Z, t=threshold, criterion="distance") # 0.25
 valX = squareform(X)
@@ -228,7 +232,7 @@ with open('./storeValue/' + file_name, 'w') as f:
             if(len(node_vals[i]) > 1):
                 for j in range(1, len(node_vals[i])):
                     f.write(
-                        f'            {{"from": {node_vals[i][0]}, "to": {node_vals[i][j]}, "label": "{round(valX[node_vals[i][0]][node_vals[i][j]], 3)}"}},\n')
+                        f'            {{"from": {node_vals[i][0]}, "to": {node_vals[i][j]}, "label": "{round(1 - valX[node_vals[i][0]][node_vals[i][j]], 3)}"}},\n')
 
         for i in range(len(res)):
             for j in range(i + 1, len(res)):
