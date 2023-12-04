@@ -157,7 +157,7 @@ else:
     for i in range(len(node_vals)):
         v = []
         for j in range(len(node_vals)):
-            v.append(1 - round(vals[node_vals[i][0]][node_vals[j][0]], 3))
+            v.append(round(1 - vals[node_vals[i][0]][node_vals[j][0]], 3))
         res.append(v)
     #res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
 
