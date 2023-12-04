@@ -2,7 +2,7 @@ import sys
 import numpy as np
 import pandas as pd
 from scipy.cluster.hierarchy import linkage, fcluster
-from scipy.spatial.distance import pdist, squareform
+from scipy.spatial.distance import pdist, squareform, jaccard
 
 import warnings
 # Set the warning filter for FutureWarning to "ignore"
@@ -67,8 +67,8 @@ for column in (data.columns[1:]):
 # ============ 3. Perform primary clustering ============
 # perform primary clustering with jaccard similarity
 # np_records = np.array(records)
-X = pdist(data, metric='correlation') # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
-Z = linkage(X, method='complete', metric='correlation')
+X = pdist(data, metric='jaccard') # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
+Z = linkage(X, method='complete', metric='jaccard')
 cluster_ids = fcluster(Z, t=threshold, criterion="distance") # 0.25
 valX = squareform(X)
 
@@ -154,10 +154,12 @@ for i in node_vals:
 if len(node_vals) == 1:
     res = [[1.0]]
 else:
-    res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
-
-if file_name[-1] == 'v':
-    file_name.replace('.csv', '.txt')
+    for i in range(len(tv)):
+        v = []
+        for j in range(len(tv)):
+            v.append(round(1 - jaccard(tv[i], tv[j]), 3))
+        res.append(v)
+    #res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
 
 with open('./storeValue/' + file_name, 'w') as f:
     f.write(str(len(node_api_vals)))
