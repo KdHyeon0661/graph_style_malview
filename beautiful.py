@@ -54,7 +54,7 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
         for(let i = 0;i < c2clen[clickedNodes[0].group].length;i++){
           let newParagraph = document.createElement('p');
           newParagraph.classList.add('second-value');
-          newParagraph.textContent = "클러스터 " + i.toString() + "과의 API 일치도 : " + c2clen[clickedNodes[0].group][i].toString();
+          newParagraph.textContent = "클러스터 " + i.toString() + "과의 API 거리 : " + c2clen[clickedNodes[0].group][i].toString();
           parentElement2.appendChild(newParagraph);
         }
         

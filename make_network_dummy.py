@@ -161,7 +161,7 @@ else:
     for i in range(len(node_vals)):
         v = []
         for j in range(len(node_vals)):
-            v.append(round(1 - vals[node_vals[i][0]][node_vals[j][0]], 3))
+            v.append(round(vals[node_vals[i][0]][node_vals[j][0]], 3))
         res.append(v)
     #res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
 
@@ -232,7 +232,7 @@ with open('./storeValue/' + file_name, 'w') as f:
             if(len(node_vals[i]) > 1):
                 for j in range(1, len(node_vals[i])):
                     f.write(
-                        f'            {{"from": {node_vals[i][0]}, "to": {node_vals[i][j]}, "label": "{round(1 - valX[node_vals[i][0]][node_vals[i][j]], 3)}"}},\n')
+                        f'            {{"from": {node_vals[i][0]}, "to": {node_vals[i][j]}, "label": "{round(valX[node_vals[i][0]][node_vals[i][j]], 3)}"}},\n')
 
         for i in range(len(res)):
             for j in range(i + 1, len(res)):
