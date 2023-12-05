@@ -236,7 +236,7 @@ with open('./storeValue/' + file_name, 'w') as f:
 
         for i in range(len(res)):
             for j in range(i + 1, len(res)):
-                if res[i][j] >= edge_print_threshold:
+                if res[i][j] <= edge_print_threshold:
                     f.write(
                     f'            {{"from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{res[i][j]}"}},\n')
 
