@@ -1,4 +1,4 @@
-const modalOpenButton = document.getElementById('modalOpenButton');
+/*const modalOpenButton = document.getElementById('modalOpenButton');
 const modalCloseButton = document.getElementById('modalCloseButton');
 const modal = document.getElementById('modalContainer');
 
@@ -12,7 +12,7 @@ modalCloseButton.addEventListener('click', () => {
 
 const finput = document.getElementById('finput');
 const sinput = document.getElementById('sinput');
-document.getElementById("clic").addEventListener("click", print);
+document.getElementById("clic").addEventListener("click", print);*/
 const first = document.getElementById('first-res');
 const second = document.getElementById('second-res');
 const third = document.getElementById('third-res');
@@ -24,23 +24,35 @@ let label_val = text_val[0].split(', ');
 let first_res = [];
 let second_res = [];
 
-function print(event){
+network.on("click", function(event){
+  let clickedNodes = nodes.get(event.nodes);
+  let check = "선택된 노드 : " + (clickedNodes[0].id).toString();
+
+  if(check != document.getElementById("firstNode").innerText){
+    second.innerHTML = "";
+    document.getElementById("secondNode").innerText = document.getElementById("firstNode").innerText;
+    second_res = first_res;
+    for(let i = 0;i < second_res.length;i++){
+      let newParagraph = document.createElement('p');
+      newParagraph.classList.add('first-value');
+      newParagraph.textContent = second_res[i];
+      second.appendChild(newParagraph);
+    }
+  }
+  else{
+
+  }
+
   first.innerHTML = "";
-  second.innerHTML = "";
   third.innerHTML = "";
   first_res = [];
-  second_res = [];
-  let first_value = text_val[Number(finput.value) + 1].split(', ');
+
+  document.getElementById("firstNode").innerText = check;
+
+  let first_value = text_val[clickedNodes[0].id].split(', ');
   for(let i = 1;i<label_val.length;i++){
     if(first_value[i] != 0){
       first_res.push(label_val[i]);
-    }
-  }
-
-  let second_value = text_val[Number(sinput.value) + 1].split(', ');
-  for(let i = 1;i<label_val.length;i++){
-    if(second_value[i] != 0){
-      second_res.push(label_val[i]);
     }
   }
 
@@ -53,19 +65,11 @@ function print(event){
     first.appendChild(newParagraph);
   }
 
-  for(let i = 0;i < second_res.length;i++){
-    let newParagraph = document.createElement('p');
-    newParagraph.classList.add('first-value');
-    newParagraph.textContent = second_res[i];
-    second.appendChild(newParagraph);
-  }
-
   for(let i = 0;i < val.length;i++){
     let newParagraph = document.createElement('p');
     newParagraph.classList.add('first-value');
     newParagraph.textContent = val[i];
     third.appendChild(newParagraph);
   }
-  console.log(first_res.length);
-  document.getElementById("corr").innerText = (val.length / first_res.length).toFixed(3);
-}
+  document.getElementById("corr").innerText = "선택한 두 노드의 API 일치도 : " + (val.length / first_res.length).toFixed(3);
+});
