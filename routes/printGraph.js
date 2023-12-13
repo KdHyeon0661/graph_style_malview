@@ -11,16 +11,38 @@ router.use(express.urlencoded({ extended: false }));
 router.get("/:id", (req, res) => {
     let dataToSend;
     let text_file;
-    const python = spawn('python', ['beautiful.py', req.params.id]);
+    let value;
+    console.log(req.params.id.toString());
+
     fs.readFile('./storeValue/' + req.params.id.toString().split('.', 1) + '.txt', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Internal Server Error");
+        }
+
         dataToSend = data;
-    });
-    fs.readFile('./text_file/' + req.params.id.toString().split('.', 1) + '.txt', 'utf8', (err, data) => {
-        text_file = data;
-    });
-    
-    python.on('close', (code) => {
-        res.render('printGraph.ejs', {whoAre:req.params.id.toString().split('.', 1), whoAre2:dataToSend, thisname:text_file});
+
+        let firstNewlineIndex = dataToSend.indexOf("\n");
+        let secondNewlineIndex = dataToSend.indexOf("\n", firstNewlineIndex + 1);
+
+        let result = dataToSend.substring(firstNewlineIndex + 1, secondNewlineIndex)
+        value = result.split(',');
+
+        fs.readFile('./text_file/' + req.params.id.toString().split('.', 1) + '.txt', 'utf8', (err, data) => {
+            if (err) {
+                // 에러 처리
+                console.error(err);
+                return res.status(500).send("Internal Server Error");
+            }
+
+            text_file = data;
+
+            const python = spawn('python', ['beautiful.py', req.params.id]);
+
+            python.on('close', (code) => {
+                res.render('printGraph.ejs', {whoAre:req.params.id.toString().split('.', 1), whoAre2:dataToSend, thisname:text_file, a:value[0], b:value[1].replace(/\r/g, '')});
+            });
+        });
     });
 });
 

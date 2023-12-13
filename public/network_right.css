@@ -164,10 +164,11 @@
 }
 
 .idv3 {
-    margin: 30px;
+    margin: 10px;
     padding: 10px;
     border: solid;
-    height:100%;
+    height:100px;
+    flex: 1;
 }
 
 .span {
@@ -238,7 +239,7 @@
 .custom-btn5{
     cursor: pointer;
     background-color: #D6EEEB;
-    width: 150px;
+    width: 170px;
     height: 30px;
     margin-left: 20px;
     margin-top: 15px;
@@ -257,3 +258,4 @@
     color: #D6EEEB;
     /*background: linear-gradient(0deg, rgba(0, 3, 255, 1) 0%, rgba(2, 126, 251, 1) 100%);*/
 }
+

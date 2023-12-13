@@ -45,15 +45,21 @@
       </div>
       <div class="div" id="corr"></div>
       </div>
+      <div class="hodi">
+        <form method="post" action="/printGraph/<%= whoAre %>" class="idv3">
+          <label style="margin-left: 20px;">클러스터링 임계값 입력 : </label> <input type="number" step="0.01" min="0" max="1" value='<%= a %>'
+            name="threshold" style="text-align: center;"/><span style="margin-left: 50px;"></span>
+            <label style="margin-left: 20px;">edge 출력 제한값 입력 :</label> <input type="number" step="0.01" min="0" max="1" value='<%= b %>'
+            name="edge_print_threshold" style="text-align: center;"/><br>
+          <button type="submit" style="margin-left: 20px" id="helvoa">그래프 재생성</button>
+        </form>
 
-      <form method="post" action="/printGraph/<%= whoAre %>" class="idv3">
-        <label style="margin-left: 20px;">클러스터링 임계값 입력 : </label> <input type="number" step="0.01" value='0.55'
-          name="threshold" style="text-align: center;"/><span style="margin-left: 100px;"></span>
-          <label style="margin-left: 20px;">edge 출력 제한값 입력 :</label> <input type="number" step="0.01" value='0.8'
-          name="edge_print_threshold" style="text-align: center;"/><br>
-        <button type="submit" style="margin-left: 20px" id="helvoa">그래프 재생성</button>
-      </form>
-      
+        <div class="idv3">
+          <label style="margin-left: 20px;">edge 출력 제한값 입력 :</label> <input type="number" step="0.01" min="0" max="1" value='<%= b %>'
+          name="edge_print_threshold" style="text-align: center;width: 150px;" id="revalue"/><br>
+          <button id="network" class="custom-btn5" onclick="redraw()">클러스터간 엣지 재연결</button>
+        </div>
+      </div>
       <button class="custom-btn5" type="button" onclick="movepage()">메인 페이지로 이동</button>
 
       <p id="close" style="display: none;"><%= whoAre2 %></p>
@@ -63,6 +69,29 @@
     <script>
       function movepage() {
         location.href = "/"
+      }
+
+      function redraw(){
+        let edgeLen = edges.length;
+        for(let i = edgeValue;i<edgeLen;i++){
+          edges.remove(i);
+        }
+
+        let val = document.getElementById('revalue').value;
+
+        for(let i = 0;i<c2clen.length;i++){
+          for(let j = i + 1;j<c2clen.length;j++){
+            if(c2clen[i][j] < val){
+              edges.add({ id: edgeValue, from: clusterIds[i][0], to: clusterIds[j][0], label:c2clen[i][j].toString() });
+              edgeValue++;
+            }
+          }
+        }
+
+        console.log(clusterIds);
+
+        data = {nodes: nodes, edges: edges};
+        network.setData(data);
       }
     </script>
       <script src="printGraphScript.js"></script>

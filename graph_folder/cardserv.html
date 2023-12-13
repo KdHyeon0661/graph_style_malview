@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <script
+            type="text/javascript"
+            src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+        <style type="text/css">
+            #mynetwork {
+                width: 500px;
+                height: 500px;
+                background-color: #ffffff;
+                border: 1px solid lightgray;
+                position: relative;
+                float: left;
+            }
+        </style>
+    </head>
+
+    <body>
+    <div class="card" style="width: 100%">
+        <div id="mynetwork" class="card-body"></div>
+    </div>
+
+
+    <script type="text/javascript">
+        let edges;
+        let nodes;
+        let network;
+        let container = document.getElementById('mynetwork');
+        let options, data;
+
+        // This method is responsible for drawing the graph, returns the drawn network
+        function drawGraph() {
+            // parsing and collecting nodes and edges from the python
+            nodes = new vis.DataSet([
+            {"group": 0, "id": 0, "label": 0, "shape": "dot", "size": 10, "title": "0"},
+            {"group": 0, "id": 4, "label": 4, "shape": "dot", "size": 10, "title": "4"},
+            {"group": 1, "id": 6, "label": 6, "shape": "dot", "size": 10, "title": "6"},
+            {"group": 2, "id": 2, "label": 2, "shape": "dot", "size": 10, "title": "2"},
+            {"group": 3, "id": 5, "label": 5, "shape": "dot", "size": 10, "title": "5"},
+            {"group": 4, "id": 1, "label": 1, "shape": "dot", "size": 10, "title": "1"},
+            {"group": 4, "id": 3, "label": 3, "shape": "dot", "size": 10, "title": "3"},
+            {"group": 5, "id": 7, "label": 7, "shape": "dot", "size": 10, "title": "7"},
+            {"group": 6, "id": 8, "label": 8, "shape": "dot", "size": 10, "title": "8"},
+            {"group": 7, "id": 9, "label": 9, "shape": "dot", "size": 10, "title": "9"},
+        ]);
+            edges = new vis.DataSet([
+
+                            {"id": 0, "from": 0, "to": 4, "label": "0.024"},
+            {"id": 1, "from": 1, "to": 3, "label": "0.0"},
+            {"id": 2, "from": 0, "to": 6, "label": "0.608"},
+            {"id": 3, "from": 0, "to": 2, "label": "0.643"},
+            {"id": 4, "from": 0, "to": 5, "label": "0.71"},
+            {"id": 5, "from": 0, "to": 1, "label": "0.778"},
+            {"id": 6, "from": 0, "to": 7, "label": "0.714"},
+            {"id": 7, "from": 6, "to": 2, "label": "0.673"},
+            {"id": 8, "from": 6, "to": 5, "label": "0.655"},
+            {"id": 9, "from": 6, "to": 1, "label": "0.625"},
+            {"id": 10, "from": 6, "to": 7, "label": "0.632"},
+            {"id": 11, "from": 6, "to": 8, "label": "0.667"},
+            {"id": 12, "from": 2, "to": 5, "label": "0.661"},
+            {"id": 13, "from": 2, "to": 1, "label": "0.676"},
+            {"id": 14, "from": 2, "to": 7, "label": "0.643"},
+            {"id": 15, "from": 5, "to": 1, "label": "0.784"},
+            {"id": 16, "from": 5, "to": 7, "label": "0.654"},
+            {"id": 17, "from": 5, "to": 8, "label": "0.784"},
+            {"id": 18, "from": 1, "to": 7, "label": "0.615"},
+            {"id": 19, "from": 1, "to": 8, "label": "0.727"},
+            {"id": 20, "from": 1, "to": 9, "label": "0.625"},
+            {"id": 21, "from": 7, "to": 8, "label": "0.615"},
+            {"id": 22, "from": 7, "to": 9, "label": "0.75"},
+            {"id": 23, "from": 8, "to": 9, "label": "0.706"},
+]);
+            data = {nodes: nodes, edges: edges};
+
+                options = {
+                    "layout": {"randomSeed": 1}, 
+                    "configure": {"enabled": false}, 
+                    "edges": {
+                        "color": {"inherit": true},
+                        "smooth": {"enabled": true, "type": "dynamic"}
+                    },
+                    "interaction": {"dragNodes": true, 
+                        "hideEdgesOnDrag": false, 
+                        "hideNodesOnDrag": false, 
+                        "navigationButtons": true}, 
+                    "physics": {"enabled": true, 
+                        "stabilization": {"enabled": true, 
+                        "fit": true, 
+                        "iterations": 1000, 
+                        "onlyDynamicEdges": false, 
+                        "updateInterval": 50}
+                      }
+                };
+                
+                network = new vis.Network(container, data, options);
+
+                return network;
+            }
+
+            drawGraph();
+        </script>
+        </body>
+        </html>

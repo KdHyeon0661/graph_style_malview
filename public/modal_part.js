@@ -1,18 +1,3 @@
-/*const modalOpenButton = document.getElementById('modalOpenButton');
-const modalCloseButton = document.getElementById('modalCloseButton');
-const modal = document.getElementById('modalContainer');
-
-modalOpenButton.addEventListener('click', () => {
-  modal.classList.remove('hidden');
-});
-
-modalCloseButton.addEventListener('click', () => {
-  modal.classList.add('hidden');
-});
-
-const finput = document.getElementById('finput');
-const sinput = document.getElementById('sinput');
-document.getElementById("clic").addEventListener("click", print);*/
 const first = document.getElementById('first-res');
 const second = document.getElementById('second-res');
 const third = document.getElementById('third-res');
@@ -38,9 +23,6 @@ network.on("click", function(event){
       newParagraph.textContent = second_res[i];
       second.appendChild(newParagraph);
     }
-  }
-  else{
-
   }
 
   first.innerHTML = "";

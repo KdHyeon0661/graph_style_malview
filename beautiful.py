@@ -12,18 +12,23 @@ soup = BeautifulSoup(page, 'html.parser')
 
 with open('./views/script.ejs', 'w', encoding='utf-8') as f:
     f.write(str(soup.find_all('script')[-1])[:-30])
-    f.write('var network = drawGraph();')
+    f.write('drawGraph();')
     f.write("""
       let value = document.getElementById("close");
       let val = value.innerText.split('\\n');
-      let size = Number(val[0]);
+      let size = Number(val[0].split(',')[0]);
+      let edgeValue = Number(val[0].split(',')[1]) - size;
       let api_val = [];
       let c2clen = [];
-      for(let i = 1 + size;i <1 + size * 2;i++){
+      let clusterIds = [];
+      for(let i = 2;i <2 + size;i++){
+        clusterIds.push(val[i].split(','));
+      }
+      for(let i = 2 + size;i <2 + size * 2;i++){
         api_val.push(val[i].split(','));
       }
 
-      for(let i = 1 + size * 2;i <1 + size * 3;i++){
+      for(let i = 2 + size * 2;i <2 + size * 3;i++){
         c2clen.push(val[i].split(','));
       }
 

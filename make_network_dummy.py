@@ -22,6 +22,7 @@ node_api_vals = []
 # ============ 1. Read data ============
 records = []
 recordss = []
+header = 0
 with open("./text_file/" + file_name, "r", encoding="utf-8") as f:
     # skip label header
     header = f.readline().strip().split(', ')
@@ -38,7 +39,7 @@ with open("./text_file/" + file_name, "r", encoding="utf-8") as f:
 
 data = pd.DataFrame(records, columns=header)  # Skip the first column as it contains numbers
 data1 = pd.DataFrame(recordss, columns=header)
-
+'''
 # ============ 2. Print common API for the entire dataset ============
 # Define the IQR threshold (you can calculate IQR for each column if needed)
 iqr_threshold = 1.5
@@ -66,7 +67,7 @@ for column in (data.columns[1:]):
 
     # Check if any of the ratios exceed 70%
     if column not in common_API and proportion_within_iqr > 0.85:
-        common_API.append(column)
+        common_API.append(column)'''
 
 # ============ 3. Perform primary clustering ============
 # perform primary clustering with jaccard similarity
@@ -90,7 +91,7 @@ sorted_clusters = sorted(cluster_elements.keys())
 for cluster in sorted_clusters:
     elements = cluster_elements[cluster]
     node_vals.append(elements)
-
+'''
 # ============ 4. Perform secondary clustering ============
 # perform secondary clustering with cosine similarity
 # Print API candidates for each cluster
@@ -140,12 +141,12 @@ for cluster, elements in cluster_elements.items():
     node_api_vals.append(labels)
 
     # Print the results for this cluster
-    '''if labels:
+    if labels:
         print(f"Cluster {cluster}: Candidate API List: {', '.join(labels)}")
         print(f"Cluster {cluster}: Candidate API Count: {len(labels)}")'''
 
 # --------------------------------------------
-
+edgeId = 0
 res = []
 tv = []
 '''for i in node_vals:
@@ -154,6 +155,7 @@ tv = []
         tmp.append(records[j][1:])
     row_means = np.round(np.mean(np.array(tmp), axis=0), decimals=3)
     tv.append(row_means.tolist())'''
+
 vals = valX.tolist()
 if len(node_vals) == 1:
     res = [[1.0]]
@@ -165,8 +167,18 @@ else:
         res.append(v)
     #res = np.round(np.corrcoef(np.array(tv)), decimals=3).tolist()
 
+for i in range(len(node_vals)):
+        v = []
+        #for j in range(len(node_vals)):
+            #v.append(round(vals[node_vals[i][0]][node_vals[j][0]], 3))
+        for j, value in enumerate(records[i][1:]):
+            if value != 0:
+                v.append(header[j + 1])
+        node_api_vals.append(v)
+
 with open('./storeValue/' + file_name, 'w') as f:
-    f.write(str(len(node_api_vals)))
+    f.write(str(len(node_api_vals)) + ',' + str(len(recordss)) + '\n')
+    f.write(str(threshold) + ',' + str(edge_print_threshold))
     for i in node_vals:
         v = ','.join(map(str,i))
         f.write('\n' + v);
@@ -206,17 +218,14 @@ with open('./storeValue/' + file_name, 'w') as f:
 
 
     <script type="text/javascript">
-        var edges;
-        var nodes;
-        var network;
-        var container;
-        var options, data;
+        let edges;
+        let nodes;
+        let network;
+        let container = document.getElementById('mynetwork');
+        let options, data;
 
         // This method is responsible for drawing the graph, returns the drawn network
         function drawGraph() {
-            var container = document.getElementById('mynetwork');
-
-
             // parsing and collecting nodes and edges from the python
             """)
         f.write("""nodes = new vis.DataSet([\n""")
@@ -232,20 +241,22 @@ with open('./storeValue/' + file_name, 'w') as f:
             if(len(node_vals[i]) > 1):
                 for j in range(1, len(node_vals[i])):
                     f.write(
-                        f'            {{"from": {node_vals[i][0]}, "to": {node_vals[i][j]}, "label": "{round(valX[node_vals[i][0]][node_vals[i][j]], 3)}"}},\n')
+                        f'            {{"id": {edgeId}, "from": {node_vals[i][0]}, "to": {node_vals[i][j]}, "label": "{round(valX[node_vals[i][0]][node_vals[i][j]], 3)}"}},\n')
+                    edgeId += 1
 
         for i in range(len(res)):
             for j in range(i + 1, len(res)):
                 if res[i][j] < edge_print_threshold:
                     f.write(
-                    f'            {{"from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{res[i][j]}"}},\n')
+                    f'            {{"id": {edgeId}, "from": {node_vals[i][0]}, "to": {node_vals[j][0]}, "label": "{res[i][j]}"}},\n')
+                    edgeId += 1
 
         f.write("""]);
         """)
 
         f.write("""    data = {nodes: nodes, edges: edges};
 
-                var options = {
+                options = {
                     "layout": {"randomSeed": 1}, 
                     "configure": {"enabled": false}, 
                     "edges": {
