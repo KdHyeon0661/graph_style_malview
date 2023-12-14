@@ -8,7 +8,7 @@ import warnings
 # Set the warning filter for FutureWarning to "ignore"
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-if len(sys.argv) != 4:
+if len(sys.argv) != 5:
     print("Insufficient arguments")
     sys.exit()
 
@@ -186,7 +186,7 @@ for i in range(len(node_vals)):
         node_api_vals.append(list(intersection))
 
 with open('./storeValue/' + file_name, 'w') as f:
-    f.write(str(len(node_api_vals)) + ',' + str(len(recordss)) + '\n')
+    f.write(str(len(node_api_vals)) + ',' + str(len(recordss)) + ',' + str(sys.argv[4]) + '\n')
     f.write(str(threshold) + ',' + str(edge_print_threshold))
     for i in node_vals:
         v = ','.join(map(str,i))

@@ -12,7 +12,7 @@ router.get("/:id", (req, res) => {
     let dataToSend;
     let text_file;
     let value;
-    console.log(req.params.id.toString());
+    let filename;
 
     fs.readFile('./storeValue/' + req.params.id.toString().split('.', 1) + '.txt', 'utf8', (err, data) => {
         if (err) {
@@ -24,7 +24,7 @@ router.get("/:id", (req, res) => {
 
         let firstNewlineIndex = dataToSend.indexOf("\n");
         let secondNewlineIndex = dataToSend.indexOf("\n", firstNewlineIndex + 1);
-
+        filename = dataToSend.substring(0, firstNewlineIndex).split(',')[2];
         let result = dataToSend.substring(firstNewlineIndex + 1, secondNewlineIndex)
         value = result.split(',');
 
@@ -40,7 +40,7 @@ router.get("/:id", (req, res) => {
             const python = spawn('python', ['beautiful.py', req.params.id]);
 
             python.on('close', (code) => {
-                res.render('printGraph.ejs', {whoAre:req.params.id.toString().split('.', 1), whoAre2:dataToSend, thisname:text_file, a:value[0], b:value[1].replace(/\r/g, '')});
+                res.render('printGraph.ejs', {whoAre:req.params.id.toString().split('.', 1), whoAre2:dataToSend, thisname:text_file, a:value[0], b:value[1].replace(/\r/g, ''), c:filename});
             });
         });
     });
@@ -48,7 +48,7 @@ router.get("/:id", (req, res) => {
 
 router.post("/:id", (req, res) => {
     var filename = req.params.id.toString().split('.', 1) + '.txt';
-    const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3)]);
+    const python = spawn('python', ['make_network_dummy.py', filename.toString(), parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3), req.body.filename]);
     
     python.stderr.on('data', (data) => {
         console.error(`오류 발생: ${data}`);
