@@ -73,17 +73,20 @@
 
       function redraw(){
         let edgeLen = edges.length;
-        for(let i = edgeValue;i<edgeLen;i++){
+        let tmpEdgeValue = edgeValue;
+        for(let i = tmpEdgeValue;i<edgeLen;i++){
           edges.remove(i);
         }
+
+        console.log(edges);
 
         let val = document.getElementById('revalue').value;
 
         for(let i = 0;i<c2clen.length;i++){
           for(let j = i + 1;j<c2clen.length;j++){
             if(c2clen[i][j] < val){
-              edges.add({ id: edgeValue, from: clusterIds[i][0], to: clusterIds[j][0], label:c2clen[i][j].toString() });
-              edgeValue++;
+              edges.add({ id: tmpEdgeValue, from: clusterIds[i][0], to: clusterIds[j][0], label:c2clen[i][j].toString() });
+              tmpEdgeValue++;
             }
           }
         }
