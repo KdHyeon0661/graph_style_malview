@@ -171,10 +171,19 @@ for i in range(len(node_vals)):
         v = []
         #for j in range(len(node_vals)):
             #v.append(round(vals[node_vals[i][0]][node_vals[j][0]], 3))
-        for j, value in enumerate(records[i][1:]):
-            if value != 0:
-                v.append(header[j + 1])
-        node_api_vals.append(v)
+        for k in range(len(node_vals[i])):
+            tmp = []
+            for j, value in enumerate(records[node_vals[i][k]][1:]):
+                if value != 0:
+                    tmp.append(header[j + 1])
+            v.append(tmp)
+
+        intersection = set(v[0])
+
+        for sublist in v[1:]:
+            intersection = intersection.intersection(sublist)
+
+        node_api_vals.append(list(intersection))
 
 with open('./storeValue/' + file_name, 'w') as f:
     f.write(str(len(node_api_vals)) + ',' + str(len(recordss)) + '\n')
