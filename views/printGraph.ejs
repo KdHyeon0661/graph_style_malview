@@ -46,21 +46,19 @@
       <div class="div" id="corr"></div>
       </div>
       <div class="hodi">
-        <form method="post" action="/printGraph/<%= whoAre %>" class="idv3">
+        <form method="post" action="/printGraph/<%= whoAre %>" class="idv3" id="form1">
           <label style="margin-left: 20px;">클러스터링 임계값 입력 : </label> <input type="number" step="0.01" min="0" max="1" value='<%= a %>'
-            name="threshold" style="text-align: center;"/><span style="margin-left: 50px;"></span>
-            <label style="margin-left: 20px;">edge 출력 제한값 입력 :</label> <input type="number" step="0.01" min="0" max="1" value='<%= b %>'
-            name="edge_print_threshold" style="text-align: center;"/><br>
+            name="threshold" style="text-align: center;center;width: 150px;"/><span style="margin-left: 50px;"></span>
           <button type="submit" style="margin-left: 20px" id="helvoa">그래프 재생성</button>
         </form>
 
         <div class="idv3">
           <label style="margin-left: 20px;">edge 출력 제한값 입력 :</label> <input type="number" step="0.01" min="0" max="1" value='<%= b %>'
-          name="edge_print_threshold" style="text-align: center;width: 150px;" id="revalue"/><br>
+          name="edge_print_threshold" style="text-align: center;width: 150px;" id="revalue" form="form1"/>
           <button id="network" class="custom-btn5" onclick="redraw()">클러스터간 엣지 재연결</button>
         </div>
       </div>
-      <button class="custom-btn5" type="button" onclick="movepage()">메인 페이지로 이동</button>
+      <button class="custom-btn5" type="button" onclick="movepage()" style="margin-bottom: 20px;">메인 페이지로 이동</button>
 
       <p id="close" style="display: none;"><%= whoAre2 %></p>
       <p id="ham" style="display: none;"><%= thisname %></p>
@@ -91,7 +89,6 @@
           }
         }
 
-        console.log(clusterIds);
 
         data = {nodes: nodes, edges: edges};
         network.setData(data);
