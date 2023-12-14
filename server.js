@@ -52,7 +52,7 @@ app.post('/filecontents', upload.single('file_uploads'), (req, res) => {
         console.log("rename complete!");
     });
 
-    const python = spawn('python', ['make_network_dummy.py', req.body.fname + '.txt', parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3), req.file.originalname.split('.', 1)]);
+    const python = spawn('python', ['make_network_dummy.py', req.body.fname + '.txt', parseFloat(req.body.threshold).toFixed(3), parseFloat(req.body.edge_print_threshold).toFixed(3), req.file.originalname.split('.', 1), req.body.metric]);
     
     python.stderr.on('data', (data) => {
         // 오류 출력

@@ -165,16 +165,16 @@
 
 .idv3 {
     margin: 5px;
-    padding: 5px;
+    padding: 15px;
     border: solid;
-    height:70px;
+    height:90px;
     flex: 1;
 }
 
 .idv4 {
     margin: 5px;
     padding: 5px;
-    height:70px;
+    height:90px;
     flex: 1;
 }
 

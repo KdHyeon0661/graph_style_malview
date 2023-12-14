@@ -48,8 +48,17 @@
       <div class="hodi" style="border: solid;margin: 15px;">
         <form method="post" action="/printGraph/<%= whoAre %>" class="idv4" id="form1">
           <label style="margin-left: 20px;">클러스터링 임계값 입력 : </label> <input type="number" step="0.01" min="0" max="1" value='<%= a %>'
-            name="threshold" style="text-align: center;center;width: 150px;"/><span style="margin-left: 50px;"></span>
+            name="threshold" style="text-align: center;width: 150px;"/><span style="margin-left: 50px;"></span>
           <input name="filename" id="filename" value="<%= c %>" hidden></input>
+          <label>메트릭 변경 : </label>
+          <select name="metric" id="metric">
+            <option value="jaccard">Jaccard</option>
+            <option value="cosine">Cosine</option>
+            <option value="minkowski">Minkowski</option>
+            <option value="correlation">Correlation</option>
+            <option value="euclidean">Euclidean</option>
+            <option value="hamming">Hamming</option>
+          </select><br>
           <button type="submit" style="margin-left: 20px" id="helvoa">그래프 재생성</button>
         </form>
 
@@ -95,7 +104,6 @@
         network.setData(data);
       }
     </script>
-      <script src="printGraphScript.js"></script>
       <script src="modal_part.js"></script>
 </body>
 

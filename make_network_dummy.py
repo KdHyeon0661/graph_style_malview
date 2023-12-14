@@ -8,13 +8,14 @@ import warnings
 # Set the warning filter for FutureWarning to "ignore"
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-if len(sys.argv) != 5:
+if len(sys.argv) != 6:
     print("Insufficient arguments")
     sys.exit()
 
 file_name = sys.argv[1]
 threshold = float(sys.argv[2])
 edge_print_threshold = float(sys.argv[3])
+metric = str(sys.argv[5])
 
 node_vals = []
 node_api_vals = []
@@ -72,8 +73,8 @@ for column in (data.columns[1:]):
 # ============ 3. Perform primary clustering ============
 # perform primary clustering with jaccard similarity
 # np_records = np.array(records)
-X = pdist(data1, metric='jaccard') # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
-Z = linkage(X, method='complete', metric='jaccard')
+X = pdist(data1, metric=metric) # 모든 노드간의 거리가 들어있음 # metric == jaccard // cosine
+Z = linkage(X, method='complete', metric=metric)
 cluster_ids = fcluster(Z, t=threshold, criterion="distance") # 0.25
 valX = squareform(X)
 
