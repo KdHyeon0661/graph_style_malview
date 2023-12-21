@@ -18,6 +18,7 @@ with open('./views/script.ejs', 'w', encoding='utf-8') as f:
       let val = value.innerText.split('\\n');
       let size = Number(val[0].split(',')[0]);
       let edgeValue = Number(val[0].split(',')[1]) - size;
+      let modeVal = (val[0].split(',')[3]).toString();
       let api_val = [];
       let c2clen = [];
       let clusterIds = [];

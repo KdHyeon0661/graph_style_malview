@@ -159,7 +159,7 @@ tv = []
 
 vals = valX.tolist()
 if len(node_vals) == 1:
-    res = [[1.0]]
+    res = [[0.0]]
 else:
     for i in range(len(node_vals)):
         v = []
@@ -187,7 +187,7 @@ for i in range(len(node_vals)):
         node_api_vals.append(list(intersection))
 
 with open('./storeValue/' + file_name, 'w') as f:
-    f.write(str(len(node_api_vals)) + ',' + str(len(recordss)) + ',' + str(sys.argv[4]) + '\n')
+    f.write(str(len(node_api_vals)) + ',' + str(len(recordss)) + ',' + str(sys.argv[4]) + ',' + str(metric) + '\n')
     f.write(str(threshold) + ',' + str(edge_print_threshold))
     for i in node_vals:
         v = ','.join(map(str,i))

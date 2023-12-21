@@ -54,10 +54,7 @@
           <select name="metric" id="metric">
             <option value="jaccard">Jaccard</option>
             <option value="cosine">Cosine</option>
-            <option value="minkowski">Minkowski</option>
             <option value="correlation">Correlation</option>
-            <option value="euclidean">Euclidean</option>
-            <option value="hamming">Hamming</option>
           </select><br>
           <button type="submit" style="margin-left: 20px" id="helvoa">그래프 재생성</button>
         </form>
@@ -86,8 +83,6 @@
           edges.remove(i);
         }
 
-        console.log(edges);
-
         let val = document.getElementById('revalue').value;
 
         for(let i = 0;i<c2clen.length;i++){
@@ -98,11 +93,13 @@
             }
           }
         }
-
+        
 
         data = {nodes: nodes, edges: edges};
         network.setData(data);
       }
+
+      document.getElementById('metric').value = modeVal.toString();
     </script>
       <script src="modal_part.js"></script>
 </body>
